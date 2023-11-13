@@ -25,7 +25,7 @@
     <section class="section dashboard">
 
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
 
                 <div class="card">
                     <div class="card-body">
@@ -43,36 +43,42 @@
                             <tr>
                                 <td scope="row" width="10%">1</td>
                                 <td width="20%">2023.11.11</td>
-                                <td width="70%"><a class="btn-link" data-bs-toggle="modal" data-bs-target="#scrollingModal">처음으로 개발을 해봤습니다.</a></td>
+                                <td width="70%"><a class="btn-link">처음으로 개발을 해봤습니다.</a></td>
                             </tr>
                             </tbody>
                         </table>
-                        <!-- End Table with stripped rows -->
-                        <div class="modal fade" id="scrollingModal" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Scrolling Modal</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- End Scrolling Modal-->
-
                     </div>
                 </div>
-
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Floating labels Form</h5>
+                        <!-- Floating Labels Form -->
+                        <form class="row g-3">
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="title" placeholder="Title">
+                                    <label for="title">Title</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Contents" id="contents"
+                                              style="height: 300px;"></textarea>
+                                    <label for="contents">Address</label>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form><!-- End floating Labels Form -->
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-
 </main><!-- End #main -->
 
 <!-- ======= Footer ======= -->
