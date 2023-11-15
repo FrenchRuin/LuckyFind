@@ -8,7 +8,6 @@ import com.example.luckyfind.model.NoticeResponse
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.GetMapping
 
 @Service
 class NoticeService(
@@ -45,6 +44,24 @@ class NoticeService(
 
     // Notice 생성일자를 기준으로 모든 데이터 조회
     @Transactional(readOnly = true)
-    @GetMapping
     fun getNoticeList(): MutableList<Notice> = noticeRepository.findAll()
+
+
+    // Notice 삭제
+    fun deleteNotice(id: Long) {
+        noticeRepository.deleteById(id)
+    }
+
+
+    // notice 수정
+    @Transactional
+    fun editNotice(request: NoticeRequest, id: Long) : NoticeResponse {
+        val notice: Notice = noticeRepository.findByIdOrNull(id) ?: throw NotFoundException("공지사항이 존재하지 않습니다.")
+
+        return with(notice) {
+            title = request.title
+            contents = request.contents
+            NoticeResponse(noticeRepository.save(this))
+        }
+    }
 }

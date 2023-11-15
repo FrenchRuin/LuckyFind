@@ -2,18 +2,19 @@ package com.example.luckyfind.domain.entity
 
 import jakarta.persistence.*
 
-@Table(name = "notice")
+@Table
 @Entity
-class Notice (
-
+class Notice(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id : Long? = null,
+    var id: Long? = null,
 
     @Column
-    var title : String,
+    var title: String,
 
     @Column
-    var contents : String,
+    var contents: String,
 
-): BaseEntity()
+
+
+    ) : BaseEntity()
