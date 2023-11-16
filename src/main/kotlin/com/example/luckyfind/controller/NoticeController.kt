@@ -34,7 +34,7 @@ class NoticeController(
     @PutMapping("/{id}")
     fun editNotice(
         @PathVariable id: Long,
-        @RequestBody request: NoticeRequest
+        request: NoticeRequest
     ) {
         noticeService.editNotice(request, id)
     }
