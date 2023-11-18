@@ -24,7 +24,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-
     <!-- Vendor CSS Files -->
     <link th:href="@{assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
@@ -54,122 +53,173 @@
         <h1>Recruit</h1>
     </div><!-- End Page Title -->
 
+    <div class="modal" id="submitConfirmModal" tabindex="-2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    등록하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" onclick="addRecruit()" data-bs-dismiss="modal"
+                            class="btn btn-primary">Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Disabled Animation Modal-->
+
     <section class="section dashboard">
-
-        <div class="row">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Vertical Pills Tabs</h5>
-
-                    <!-- Vertical Pills Tabs -->
-                    <div class="d-flex align-items-start">
-                        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</button>
-                            <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
-                            <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
-                        </div>
-                        <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.
+        <div class="modal fade" id="modalDialogScrollable" tabindex="-1" >
+            <div class="modal-dialog modal-dialog-scrollable" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Recruit</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3">
+                            <div class="col-md-12">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title">
                             </div>
-                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                Nesciunt totam et. Consequuntur magnam aliquid eos nulla dolor iure eos quia. Accusantium distinctio omnis et atque fugiat. Itaque doloremque aliquid sint quasi quia distinctio similique. Voluptate nihil recusandae mollitia dolores. Ut laboriosam voluptatum dicta.
+                            <div class="col-md-12">
+                                <label for="skill" class="form-label">Skill</label>
+                                <select id="skill" class="form-select" aria-label="Default select example">
+                                    <option selected>- 선택 -</option>
+                                    <option value="JAVA">JAVA</option>
+                                    <option value="KOTLIN">KOTLIN</option>
+                                </select>
                             </div>
-                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                                Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
+                            <div class="col-md-12">
+                                <label for="status" class="form-label">Status</label>
+                                <select id="status" class="form-select" aria-label="Default select example">
+                                    <option selected>- 선택 -</option>
+                                    <option value="READY">READY</option>
+                                    <option value="PROGRESS">PROGRESS</option>
+                                    <option value="FINISH">FINISH</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="contents" class="form-label">Contents</label>
+                                <textarea class="form-control" id="contents" style="height: 250px;"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="recruitDateFrom" class="form-label">Recruit Date From</label>
+                                <input type="date" class="form-control" id="recruitDateFrom">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="recruitDateTo" class="form-label">Recruit Date To</label>
+                                <input type="date" class="form-control" id="recruitDateTo">
+                            </div>
+                        </form><!-- End Multi Columns Form -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" onclick="addRecruit()" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Modal Dialog Scrollable-->
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Bordered Tabs Justified</h5>
+
+                <!-- Scrolling Modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalDialogScrollable">
+                    Create Recruit
+                </button>
+
+                <!-- Bordered Tabs Justified -->
+                <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home"
+                                aria-selected="true">Home
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                                aria-controls="profile" aria-selected="false">Profile
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                data-bs-target="#bordered-justified-contact" type="button" role="tab"
+                                aria-controls="contact" aria-selected="false">Contact
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                    <div class="tab-pane fade show active" id="bordered-justified-home" role="tabpanel"
+                         aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!-- Card with an image on left -->
+                                <div class="card">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img src="assets/img/card.jpg" class="img-fluid rounded-start" alt="...">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Lucky Find Project</h5>
+                                                <span class="badge rounded-pill bg-primary">JAVA</span>
+                                                <span class="badge rounded-pill bg-primary">KOTLIN</span>
+                                                <p class="card-text">팀원들간의 프로젝트 서비스 입니다. >_<</p>
+                                                <button type="button" class="btn btn-success"><i
+                                                        class="bi bi-check-circle"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- End Card with an image on left -->
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- Card with an image on left -->
+                                <div class="card">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img src="assets/img/card.jpg" class="img-fluid rounded-start" alt="...">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Lucky Find Project</h5>
+                                                <span class="badge rounded-pill bg-primary">JAVA</span>
+                                                <span class="badge rounded-pill bg-primary">KOTLIN</span>
+                                                <p class="card-text">팀원들간의 프로젝트 서비스 입니다. >_<</p>
+                                                <button type="button" class="btn btn-success"><i
+                                                        class="bi bi-check-circle"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- End Card with an image on left -->
                             </div>
                         </div>
                     </div>
-                    <!-- End Vertical Pills Tabs -->
+                    <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel"
+                         aria-labelledby="profile-tab">
+                        Nesciunt totam et. Consequuntur magnam aliquid eos nulla dolor iure eos quia. Accusantium
+                        distinctio omnis et atque fugiat. Itaque doloremque aliquid sint quasi quia distinctio
+                        similique. Voluptate nihil recusandae mollitia dolores. Ut laboriosam voluptatum dicta.
+                    </div>
+                    <div class="tab-pane fade" id="bordered-justified-contact" role="tabpanel"
+                         aria-labelledby="contact-tab">
+                        Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium
+                        quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum
+                        veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
+                    </div>
+                </div><!-- End Bordered Tabs Justified -->
 
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Bordered Tabs Justified</h5>
-
-                    <!-- Bordered Tabs Justified -->
-                    <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
-                        <li class="nav-item flex-fill" role="presentation">
-                            <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
-                        </li>
-                        <li class="nav-item flex-fill" role="presentation">
-                            <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-                        </li>
-                        <li class="nav-item flex-fill" role="presentation">
-                            <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
-                        </li>
-                    </ul>
-                    <div class="tab-content pt-2" id="borderedTabJustifiedContent">
-                        <div class="tab-pane fade show active" id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Datatables</h5>
-                                    <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable</p>
-
-                                    <!-- Table with stripped rows -->
-                                    <table class="table datatable">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Position</th>
-                                            <th scope="col">Age</th>
-                                            <th scope="col">Start Date</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Brandon Jacob</td>
-                                            <td>Designer</td>
-                                            <td>28</td>
-                                            <td>2016-05-25</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Bridie Kessler</td>
-                                            <td>Developer</td>
-                                            <td>35</td>
-                                            <td>2014-12-05</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Ashleigh Langosh</td>
-                                            <td>Finance</td>
-                                            <td>45</td>
-                                            <td>2011-08-12</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">4</th>
-                                            <td>Angus Grady</td>
-                                            <td>HR</td>
-                                            <td>34</td>
-                                            <td>2012-06-11</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">5</th>
-                                            <td>Raheem Lehner</td>
-                                            <td>Dynamic Division Officer</td>
-                                            <td>47</td>
-                                            <td>2011-04-19</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <!-- End Table with stripped rows -->
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
-                            Nesciunt totam et. Consequuntur magnam aliquid eos nulla dolor iure eos quia. Accusantium distinctio omnis et atque fugiat. Itaque doloremque aliquid sint quasi quia distinctio similique. Voluptate nihil recusandae mollitia dolores. Ut laboriosam voluptatum dicta.
-                        </div>
-                        <div class="tab-pane fade" id="bordered-justified-contact" role="tabpanel" aria-labelledby="contact-tab">
-                            Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
-                        </div>
-                    </div><!-- End Bordered Tabs Justified -->
-
-                </div>
             </div>
         </div>
     </section>
@@ -204,31 +254,36 @@
         })
     }
 
-    function getAllNotice() {
+    function getAllRecruit() {
         $.ajax({
             type: "GET",
-            url: "/api/v1/notice/all",
+            url: "/api/v1/recruit/all",
         }).done(function (result) {
-            tableSetting(result)
+            console.log(result)
+            // tableSetting(result)
         })
     }
 
-    function addNotice() {
+    function addRecruit() {
 
         let request = {
             "title": $("#title").val(),
-            "contents": $("#contents").val()
+            "contents": $("#contents").val(),
+            "recruitDateFrom" : $("#recruitDateFrom").val(),
+            "recruitDateTo" : $("#recruitDateTo").val(),
+            "skill" : $("#skill").val(),
+            "status" : $("#status").val()
         }
 
         $.ajax({
             type: "POST",
-            url: "/api/v1/notice",
+            url: "/api/v1/recruit",
             data: JSON.stringify(request),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
         }).done(function (result) {
-            $("#no").val(result.id);
-            getAllNotice()
+            console.log(result)
+            getAllRecruit()
         })
     }
 

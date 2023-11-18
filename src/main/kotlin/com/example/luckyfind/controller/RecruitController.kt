@@ -23,7 +23,7 @@ class RecruitController(
     fun getRecruit(@PathVariable id: Long) =
         recruitService.getRecruit(id)
 
-    @GetMapping
+    @GetMapping("/all")
     fun getRecruitList() =
         recruitService.getRecruitList()
 

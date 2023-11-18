@@ -28,9 +28,9 @@ class Recruit (
     var status : RecruitStatus,
 
     @Column
-    var recruitDateFrom : LocalDateTime? = null,
+    var recruitDateFrom : LocalDate? = null,
 
     @Column
-    var recruitDateTo : LocalDateTime? = null,
+    var recruitDateTo : LocalDate? = null,
 
 ):BaseEntity()

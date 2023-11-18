@@ -4,17 +4,23 @@ import com.example.luckyfind.domain.entity.Recruit
 import com.example.luckyfind.domain.enum.RecruitSkill
 import com.example.luckyfind.domain.enum.RecruitStatus
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
+import org.springframework.format.annotation.DateTimeFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class RecruitRequest(
     val title: String,
     val contents: String,
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    val recruitDateFrom: LocalDateTime?,
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+    val recruitDateFrom: LocalDate?,
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    val recruitDateTo: LocalDateTime?,
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+    val recruitDateTo: LocalDate?,
 
     val skill: RecruitSkill,
     val status: RecruitStatus,
@@ -31,10 +37,10 @@ data class RecruitResponse(
     val status: RecruitStatus,
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    val recruitDateFrom: LocalDateTime?,
+    val recruitDateFrom: LocalDate?,
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    val recruitDateTo: LocalDateTime?,
+    val recruitDateTo: LocalDate?,
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     val createdAt: LocalDateTime?,
