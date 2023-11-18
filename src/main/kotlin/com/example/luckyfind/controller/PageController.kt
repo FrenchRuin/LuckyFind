@@ -14,7 +14,7 @@ class PageController {
     @GetMapping("/notice")
     fun notice() = "notice/notice"
 
-    // 공지사항 세부사항 Notice Detail
-    @GetMapping("/noticeDetail")
-    fun noticeDetail() = "notice/noticeDetail"
+    @GetMapping("/recruit")
+    fun recruit() = "recruit/recruit"
+
 }

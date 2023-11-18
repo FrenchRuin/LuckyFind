@@ -40,7 +40,33 @@
 </header><!-- End Header -->
 
 <!-- ======= Sidebar ======= -->
-<aside  th:replace="~{fragment/sidebarFragment::sidebarFragment}">
+<aside id="sidebar" class="sidebar"  th:fragment="sidebarFragment">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link collapsed active" th:href="@{/}" >
+                <i class="bi bi-grid"></i>
+                <span>Main</span>
+            </a>
+        </li><!-- End Main Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" th:href="@{/notice}">
+                <i class="ri-sticky-note-line"></i>
+                <span>Notice</span>
+            </a>
+        </li><!-- End Notice Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" th:href="@{/recruit}">
+                <i class="ri-sticky-note-line"></i>
+                <span>Recruit</span>
+            </a>
+        </li><!-- End Recruit Nav -->
+
+    </ul>
+
 </aside><!-- End Sidebar-->
 
 <main id="main" class="main">
@@ -119,6 +145,22 @@
                         </div>
                         <a class="card-link" th:href="@{/notice}">
                              Go to Notice
+                        </a>
+                    </div>
+                </div><!-- End Card with titles, buttons, and links -->
+            </div>
+            <div class="col-lg-3">
+                <!-- Card with titles, buttons, and links -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Recruit</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">프로젝트 팀원 모집 서비스</h6>
+                        <p class="card-text">RestFul API를 활용한 프로젝트 팀원 모집 서비스</p>
+                        <div class="progress mb-3">
+                            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <a class="card-link" th:href="@{/recruit}">
+                            Go to Recruit
                         </a>
                     </div>
                 </div><!-- End Card with titles, buttons, and links -->
