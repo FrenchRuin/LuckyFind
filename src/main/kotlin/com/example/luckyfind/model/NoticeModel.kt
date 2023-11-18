@@ -3,6 +3,7 @@ package com.example.luckyfind.model
 import com.example.luckyfind.domain.entity.Notice
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 // Notice Entity Request
@@ -17,10 +18,10 @@ data class NoticeResponse(
     val title: String,
     val contents: String,
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     val createdAt: LocalDateTime?,
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     val updatedAt: LocalDateTime?,
 ) {
     companion object {

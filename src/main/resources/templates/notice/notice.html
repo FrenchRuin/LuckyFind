@@ -12,12 +12,13 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link th:href="@{/assets/img/favicon.png}"  rel="icon">
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
     <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
 
     <!-- Vendor JS Files -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -74,16 +75,11 @@
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">작성일</th>
                                 <th scope="col">제목</th>
+                                <th scope="col">등록일시</th>
                             </tr>
                             </thead>
                             <tbody id="noticeTable">
-                            <tr th:each="notice:${noticeList}">
-                                <td scope="row" width="10%"></td>
-                                <td width="20%" th:text="${notice.title}">2023.11.11</td>
-                                <td width="70%" ><a class="btn-link" th:text="${notice.contents}">처음으로 개발을 해봤습니다.</a></td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -95,7 +91,13 @@
                         <h5 class="card-title">Floating labels Form</h5>
                         <!-- Floating Labels Form -->
                         <form class="row g-3">
-                            <div class="col-md-12">
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="no" placeholder="No" readonly DISABLED>
+                                    <label for="title">No</label>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
                                 <div class="form-floating">
                                     <input type="text" class="form-control" id="title" placeholder="Title">
                                     <label for="title">Title</label>
@@ -105,12 +107,90 @@
                                 <div class="form-floating">
                                     <textarea class="form-control" placeholder="Contents" id="contents"
                                               style="height: 300px;"></textarea>
-                                    <label for="contents">Address</label>
+                                    <label for="contents">Contents</label>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="button" onclick="getNotice()" class="btn btn-primary" id="btnApply">Submit</button>
-                                <button type="button" onclick="addNotice()"  class="btn btn-secondary">Reset</button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#submitConfirmModal"
+                                        class="btn btn-primary">
+                                    Submit
+                                </button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#editConfirmModal"
+                                        class="btn btn-warning">Modify
+                                </button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
+                                        class="btn btn-danger">Delete
+                                </button>
+
+
+                                <div class="modal" id="deleteConfirmModal" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirm</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                삭제하시겠습니까?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="button" onclick="deleteNotice()" data-bs-dismiss="modal"
+                                                        class="btn btn-primary">Confirm
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- End Disabled Animation Modal-->
+
+                                <div class="modal" id="submitConfirmModal" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirm</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                등록하시겠습니까?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="button" onclick="addNotice()" data-bs-dismiss="modal"
+                                                        class="btn btn-primary">Confirm
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- End Disabled Animation Modal-->
+
+                                <div class="modal" id="editConfirmModal" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirm</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                수정하시겠습니까?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="button" onclick="editNotice()" data-bs-dismiss="modal"
+                                                        class="btn btn-primary">Confirm
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- End Disabled Animation Modal-->
                             </div>
                         </form><!-- End floating Labels Form -->
                     </div>
@@ -124,40 +204,110 @@
 <footer th:replace="~{fragment/footerFragment::footerFragment}">
 </footer><!-- End Footer -->
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
 
 
 </body>
 
 <script th:inline="javascript">
 
-    function getNotice() {
+    $(document).ready(function () {
+        getAllNotice();
+
+
+    })
+
+    function getNoticeById(id) {
         $.ajax({
-            type : "GET",
-            url : "/api/v1/notice/all",
-        }).done(function(result) {
-            $("#noticeTable").replaceWith(result)
-            console.log(result)
+            type: "GET",
+            url: "/api/v1/notice/" + id,
+        }).done(function (result) {
+            $("#contents").val(result.contents);
+            $("#title").val(result.title);
+            $("#no").val(result.id);
+        })
+    }
+
+    function getAllNotice() {
+        $.ajax({
+            type: "GET",
+            url: "/api/v1/notice/all",
+        }).done(function (result) {
+            tableSetting(result)
         })
     }
 
     function addNotice() {
 
         let request = {
-            "title" : $("#title").val(),
-            "contents" : $("#contents").val()
+            "title": $("#title").val(),
+            "contents": $("#contents").val()
         }
 
         $.ajax({
-            type : "POST",
-            url : "/api/v1/notice",
-            data : JSON.stringify(request),
-            contentType : "application/json; charset=utf-8",
-            dataType : "json",
-        }).done(function(result) {
-            $("#noticeTable").replaceWith(result)
-            console.log(result)
+            type: "POST",
+            url: "/api/v1/notice",
+            data: JSON.stringify(request),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+        }).done(function (result) {
+            $("#no").val(result.id);
+            getAllNotice()
         })
+    }
+
+    function deleteNotice() {
+
+        let id = $("#no").val();
+
+        $.ajax({
+            type: "DELETE",
+            url: "/api/v1/notice/" + id,
+        }).done(function () {
+            $("#title").val('');
+            $("#contents").val('');
+            $("#no").val('');
+            getAllNotice()
+        })
+    }
+
+    function editNotice() {
+
+
+        let request = {
+            "title": $("#title").val(),
+            "contents": $("#contents").val()
+        }
+
+        let id = $("#no").val()
+
+        $.ajax({
+            type: "PUT",
+            url: "/api/v1/notice/" + id,
+            data: JSON.stringify(request),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+        }).done(function (result) {
+            getAllNotice()
+        })
+
+    }
+
+    function tableSetting(data) {
+
+        let innerHtml = '';
+
+        data.forEach(row => {
+            innerHtml += '<tr>'
+            innerHtml += '<td scope="row" width="10%">' + row.id + '</td>'
+            innerHtml += '<td width="20%" ><a class="text-primary" href="javascript:void(0);" onclick="getNoticeById(' + row.id + ')">' + row.title + '</a></td>'
+            innerHtml += '<td width="20%" >' + row.createdAt + '</td>'
+            innerHtml += '</tr>'
+
+        })
+        $('#noticeTable').empty();
+        $('#noticeTable').append(innerHtml);
     }
 
 
