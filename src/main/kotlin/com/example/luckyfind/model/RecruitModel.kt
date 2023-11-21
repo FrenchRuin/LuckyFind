@@ -36,6 +36,8 @@ data class RecruitResponse(
     val skill: RecruitSkill,
     val status: RecruitStatus,
 
+    val imageUrl: String?,
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     val recruitDateFrom: LocalDate?,
 
@@ -62,6 +64,7 @@ data class RecruitResponse(
                     updatedAt = updatedAt,
                     status = status,
                     skill = skill,
+                    imageUrl = if (imageUrl.isNullOrEmpty()) null else "http://localhost:9090/images/$imageUrl",
                 )
             }
     }

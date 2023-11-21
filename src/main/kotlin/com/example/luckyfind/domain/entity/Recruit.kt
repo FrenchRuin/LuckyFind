@@ -8,29 +8,32 @@ import java.time.LocalDateTime
 
 @Table
 @Entity
-class Recruit (
+class Recruit(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id : Long? = null,
+    val id: Long? = null,
 
     @Column
-    var title : String,
+    var title: String,
 
     @Column
-    var contents : String,
+    var contents: String,
+
+    @Column
+    var imageUrl: String? = null,
 
     @Column
     @Enumerated(EnumType.STRING)
-    var skill : RecruitSkill,
+    var skill: RecruitSkill,
 
     @Column
     @Enumerated(EnumType.STRING)
-    var status : RecruitStatus,
+    var status: RecruitStatus,
 
     @Column
-    var recruitDateFrom : LocalDate? = null,
+    var recruitDateFrom: LocalDate? = null,
 
     @Column
-    var recruitDateTo : LocalDate? = null,
+    var recruitDateTo: LocalDate? = null,
 
-):BaseEntity()
+    ) : BaseEntity()
