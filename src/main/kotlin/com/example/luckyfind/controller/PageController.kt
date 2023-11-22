@@ -17,4 +17,6 @@ class PageController {
     @GetMapping("/recruit")
     fun recruit() = "recruit/recruit"
 
+    @GetMapping("/chat")
+    fun chat() = "chat/chat"
 }
