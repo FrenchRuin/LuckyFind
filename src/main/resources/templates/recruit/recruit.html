@@ -53,116 +53,23 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-        <div class="modal fade" id="modalDialogScrollable" tabindex="-1">
-            <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Create Recruit</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="row g-3">
-                            <div class="col-md-12">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title">
-                            </div>
-                            <div class="col-md-12">
-                                <label for="skill" class="form-label">Skill</label>
-                                <select id="skill" class="form-select" aria-label="Default select example">
-                                    <option selected>- 선택 -</option>
-                                    <option value="JAVA">JAVA</option>
-                                    <option value="KOTLIN">KOTLIN</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="status" class="form-label">Status</label>
-                                <select id="status" class="form-select" aria-label="Default select example">
-                                    <option selected>- 선택 -</option>
-                                    <option value="READY">READY</option>
-                                    <option value="PROGRESS">PROGRESS</option>
-                                    <option value="FINISH">FINISH</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="formFile" class="col-sm-2 col-form-label">File Upload</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" type="file" id="formFile">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="contents" class="form-label">Contents</label>
-                                <textarea class="form-control" id="contents" style="height: 250px;"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="recruitDateFrom" class="form-label">Recruit Date From</label>
-                                <input type="date" class="form-control" id="recruitDateFrom">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="recruitDateTo" class="form-label">Recruit Date To</label>
-                                <input type="date" class="form-control" id="recruitDateTo">
-                            </div>
-                        </form><!-- End Multi Columns Form -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" onclick="addRecruit()" class="btn btn-primary" data-bs-dismiss="modal">
-                            Save
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div><!-- End Modal Dialog Scrollable-->
 
-        <div class="modal fade" id="recruitModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Recruit Info</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="row g-3">
-                            <div class="col-md-12">
-                                <label for="titleModal" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="titleModal">
-                            </div>
-                            <div class="col-md-12">
-                                <label for="skillModal" class="form-label">Skill</label>
-                                <select id="skillModal" class="form-select" aria-label="Default select example">
-                                    <option selected>- 선택 -</option>
-                                    <option value="JAVA">JAVA</option>
-                                    <option value="KOTLIN">KOTLIN</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="statusModal" class="form-label">Status</label>
-                                <select id="statusModal" class="form-select" aria-label="Default select example">
-                                    <option selected>- 선택 -</option>
-                                    <option value="READY">READY</option>
-                                    <option value="PROGRESS">PROGRESS</option>
-                                    <option value="FINISH">FINISH</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="contentsModal" class="form-label">Contents</label>
-                                <textarea class="form-control" id="contentsModal" style="height: 250px;"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="recruitDateFromModal" class="form-label">Recruit Date From</label>
-                                <input type="date" class="form-control" id="recruitDateFromModal">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="recruitDateToModal" class="form-label">Recruit Date To</label>
-                                <input type="date" class="form-control" id="recruitDateToModal">
-                            </div>
-                        </form><!-- End Multi Columns Form -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <div class="accordion mb-3" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        팀원모집서비스 소개
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>개발자들의 팀 프로젝트를 위해서 모집공고를 등록하는 서비스입니다.</strong> <br>
+                        각 프로젝트의 주제, 소개글과 사용하는 스택들을 등록하고 팀원을 모집합니다. <br>
+                        좌측에는 모집공고 등록, 우측에는 언어별 모집공고 통계를 나타냅니다.
                     </div>
                 </div>
             </div>
-        </div><!-- End Modal Dialog Scrollable-->
+        </div><!-- End Default Accordion Example -->
 
         <div class="row">
             <div class="card col-lg-6">
@@ -192,6 +99,117 @@
         </div>
 
     </section>
+
+    <div class="modal fade" id="modalDialogScrollable" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Recruit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="row g-3">
+                        <div class="col-md-12">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title">
+                        </div>
+                        <div class="col-md-12">
+                            <label for="skill" class="form-label">Skill</label>
+                            <select id="skill" class="form-select" aria-label="Default select example">
+                                <option selected>- 선택 -</option>
+                                <option value="JAVA">JAVA</option>
+                                <option value="KOTLIN">KOTLIN</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="status" class="form-label">Status</label>
+                            <select id="status" class="form-select" aria-label="Default select example">
+                                <option selected>- 선택 -</option>
+                                <option value="READY">READY</option>
+                                <option value="PROGRESS">PROGRESS</option>
+                                <option value="FINISH">FINISH</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="formFile" class="col-sm-2 col-form-label">File Upload</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="file" id="formFile">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="contents" class="form-label">Contents</label>
+                            <textarea class="form-control" id="contents" style="height: 250px;"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="recruitDateFrom" class="form-label">Recruit Date From</label>
+                            <input type="date" class="form-control" id="recruitDateFrom">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="recruitDateTo" class="form-label">Recruit Date To</label>
+                            <input type="date" class="form-control" id="recruitDateTo">
+                        </div>
+                    </form><!-- End Multi Columns Form -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" onclick="addRecruit()" class="btn btn-primary" data-bs-dismiss="modal">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Modal Dialog Scrollable-->
+
+    <div class="modal fade" id="recruitModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recruit Info</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="row g-3">
+                        <div class="col-md-12">
+                            <label for="titleModal" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="titleModal">
+                        </div>
+                        <div class="col-md-12">
+                            <label for="skillModal" class="form-label">Skill</label>
+                            <select id="skillModal" class="form-select" aria-label="Default select example">
+                                <option selected>- 선택 -</option>
+                                <option value="JAVA">JAVA</option>
+                                <option value="KOTLIN">KOTLIN</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="statusModal" class="form-label">Status</label>
+                            <select id="statusModal" class="form-select" aria-label="Default select example">
+                                <option selected>- 선택 -</option>
+                                <option value="READY">READY</option>
+                                <option value="PROGRESS">PROGRESS</option>
+                                <option value="FINISH">FINISH</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="contentsModal" class="form-label">Contents</label>
+                            <textarea class="form-control" id="contentsModal" style="height: 250px;"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="recruitDateFromModal" class="form-label">Recruit Date From</label>
+                            <input type="date" class="form-control" id="recruitDateFromModal">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="recruitDateToModal" class="form-label">Recruit Date To</label>
+                            <input type="date" class="form-control" id="recruitDateToModal">
+                        </div>
+                    </form><!-- End Multi Columns Form -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Modal Dialog Scrollable-->
 </main><!-- End #main -->
 
 <!-- ======= Footer ======= -->

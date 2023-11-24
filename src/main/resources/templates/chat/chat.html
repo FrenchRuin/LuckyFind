@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 
-<head >
+<head>
 
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -13,13 +13,16 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link th:href="@{/assets/img/favicon.png}"  rel="icon">
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
     <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
 
+    <!-- Vendor JS Files -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Vendor CSS Files -->
     <link th:href="@{assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
@@ -36,309 +39,6 @@
     <link th:href="@{assets/css/style.css}" rel="stylesheet">
 </head>
 
-<style>
-    * {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-
-    html,body {
-        height: 100%;
-        overflow: hidden;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-        font-weight: 400;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 1rem;
-        line-height: 1.58;
-        color: #333;
-        background-color: #f4f4f4;
-        height: 100%;
-    }
-
-    body:before {
-        height: 50%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: #128ff2;
-        content: "";
-        z-index: 0;
-    }
-
-    .clearfix:after {
-        display: block;
-        content: "";
-        clear: both;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    .form-control {
-        width: 100%;
-        min-height: 38px;
-        font-size: 15px;
-        border: 1px solid #c8c8c8;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    input {
-        padding-left: 10px;
-        outline: none;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-    h1 {
-        font-size: 1.7em;
-    }
-
-    a {
-        color: #128ff2;
-    }
-
-    button {
-        box-shadow: none;
-        border: 1px solid transparent;
-        font-size: 14px;
-        outline: none;
-        line-height: 100%;
-        white-space: nowrap;
-        vertical-align: middle;
-        padding: 0.6rem 1rem;
-        border-radius: 2px;
-        transition: all 0.2s ease-in-out;
-        cursor: pointer;
-        min-height: 38px;
-    }
-
-    button.default {
-        background-color: #e8e8e8;
-        color: #333;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-    }
-
-    button.primary {
-        background-color: #128ff2;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-        color: #fff;
-    }
-
-    button.accent {
-        background-color: #ff4743;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-        color: #fff;
-    }
-
-    #username-page {
-        text-align: center;
-    }
-
-    .username-page-container {
-        background: #fff;
-        box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
-        border-radius: 2px;
-        width: 100%;
-        max-width: 500px;
-        display: inline-block;
-        margin-top: 42px;
-        vertical-align: middle;
-        position: relative;
-        padding: 35px 55px 35px;
-        min-height: 250px;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-        margin-top: -160px;
-    }
-
-    .username-page-container .username-submit {
-        margin-top: 10px;
-    }
-
-
-    #chat-page {
-        position: relative;
-        height: 100%;
-    }
-
-    .chat-container {
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: #fff;
-        box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
-        margin-top: 30px;
-        height: calc(100% - 60px);
-        max-height: 600px;
-        position: relative;
-    }
-
-    #chat-page ul {
-        list-style-type: none;
-        background-color: #FFF;
-        margin: 0;
-        overflow: auto;
-        overflow-y: scroll;
-        padding: 0 20px 0px 20px;
-        height: calc(100% - 150px);
-    }
-
-    #chat-page #messageForm {
-        padding: 20px;
-    }
-
-    #chat-page ul li {
-        line-height: 1.5rem;
-        padding: 10px 20px;
-        margin: 0;
-        border-bottom: 1px solid #f4f4f4;
-    }
-
-    #chat-page ul li p {
-        margin: 0;
-    }
-
-    #chat-page .event-message {
-        width: 100%;
-        text-align: center;
-        clear: both;
-    }
-
-    #chat-page .event-message p {
-        color: #777;
-        font-size: 14px;
-        word-wrap: break-word;
-    }
-
-    #chat-page .chat-message {
-        padding-left: 68px;
-        position: relative;
-    }
-
-    #chat-page .chat-message i {
-        position: absolute;
-        width: 42px;
-        height: 42px;
-        overflow: hidden;
-        left: 10px;
-        display: inline-block;
-        vertical-align: middle;
-        font-size: 18px;
-        line-height: 42px;
-        color: #fff;
-        text-align: center;
-        border-radius: 50%;
-        font-style: normal;
-        text-transform: uppercase;
-    }
-
-    #chat-page .chat-message span {
-        color: #333;
-        font-weight: 600;
-    }
-
-    #chat-page .chat-message p {
-        color: #43464b;
-    }
-
-    #messageForm .input-group input {
-        float: left;
-        width: calc(100% - 85px);
-    }
-
-    #messageForm .input-group button {
-        float: left;
-        width: 80px;
-        height: 38px;
-        margin-left: 5px;
-    }
-
-    .chat-header {
-        text-align: center;
-        padding: 15px;
-        border-bottom: 1px solid #ececec;
-    }
-
-    .chat-header h2 {
-        margin: 0;
-        font-weight: 500;
-    }
-
-    .connecting {
-        padding-top: 5px;
-        text-align: center;
-        color: #777;
-        position: absolute;
-        top: 65px;
-        width: 100%;
-    }
-
-
-    @media screen and (max-width: 730px) {
-
-        .chat-container {
-            margin-left: 10px;
-            margin-right: 10px;
-            margin-top: 10px;
-        }
-    }
-
-    @media screen and (max-width: 480px) {
-        .chat-container {
-            height: calc(100% - 30px);
-        }
-
-        .username-page-container {
-            width: auto;
-            margin-left: 15px;
-            margin-right: 15px;
-            padding: 25px;
-        }
-
-        #chat-page ul {
-            height: calc(100% - 120px);
-        }
-
-        #messageForm .input-group button {
-            width: 65px;
-        }
-
-        #messageForm .input-group input {
-            width: calc(100% - 70px);
-        }
-
-        .chat-header {
-            padding: 10px;
-        }
-
-        .connecting {
-            top: 60px;
-        }
-
-        .chat-header h2 {
-            font-size: 1.1em;
-        }
-    }
-
-
-</style>
-
 <body>
 
 <!-- ======= Header ======= -->
@@ -352,59 +52,127 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Main</h1>
+        <h1>Chat</h1>
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
+        <div class="accordion mb-3" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        채팅서비스 소개
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>모든 회원들간의 채팅 서비스입니다.</strong> <br>
+                        회원들간의 의견공유를 위한 채팅방과 더불어, 현재 진행하고있는 프로젝트 팀원들간의 채팅 서비스도 제공합니다.
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Default Accordion Example -->
 
         <div class="row">
             <div class="col-lg-6">
-
                 <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Lucky Find</h5>
+                    <div class="card-body pb-0 mb-3">
+                        <h5 class="card-title">All Chat |
+                            <a data-bs-toggle="modal" data-bs-target="#createChatModal" href="javascript:void(0);"><span class="badge rounded-pill bg-success text-white">+</span></a>
+                        </h5>
 
-                        <div id="username-page">
-                            <div class="username-page-container">
-                                <h1 class="title">username을 입력하세요</h1>
-                                <form id="usernameForm" name="usernameForm">
-                                    <div class="form-group">
-                                        <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="accent username-submit">채팅 시작하기</button>
-                                    </div>
-                                </form>
+                        <div class="news">
+                            <div class="post-item clearfix">
+                                <img src="assets/img/news-1.jpg" alt="">
+                                <h4><a onclick="openChat()" data-bs-toggle="modal" data-bs-target="#confirmModal" href="javascript:void(0);" id="chatTitle">SQL
+                                    팀 문의가 필요합니다.</a></h4>
+                                <p>SQL 팀 프로젝트 문의 방</p>
                             </div>
-                        </div>
-
-                        <div id="chat-page" class="hidden">
-                            <div class="chat-container">
-                                <div class="chat-header">
-                                    <h2>Spring WebSocket Chat Demo</h2>
-                                </div>
-                                <div class="connecting">
-                                    연결중...
-                                </div>
-                                <ul id="messageArea">
-
-                                </ul>
-                                <form id="messageForm" name="messageForm">
-                                    <div class="form-group">
-                                        <div class="input-group clearfix">
-                                            <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
-                                            <button type="submit" class="primary">보내기</button>
-                                        </div>
-                                    </div>
-                                </form>
+                        </div><!-- End sidebar recent posts-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body pb-0 mb-3">
+                        <h5 class="card-title">Project Chat |
+                        </h5>
+                        <div class="news">
+                            <div class="post-item clearfix">
+                                <img src="assets/img/news-1.jpg" alt="">
+                                <h4><a onclick="openChat()" data-bs-toggle="modal" data-bs-target="#confirmModal" href="javascript:void(0);">Lucky Find 커뮤니티</a></h4>
+                                <p>Lucky Find 프로젝트 팀원들간의 공지사항</p>
                             </div>
-                        </div>
-
+                        </div><!-- End sidebar recent posts-->
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="modal" id="confirmModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <span id="chatTitleModal">채팅방에 참가하시겠습니까?</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" onclick="connect()" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#chatModal"
+                            class="btn btn-primary">Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Disabled Animation Modal-->
+
+    <div class="modal fade" id="chatModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chat Modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="disconnect()"></button>
+                </div>
+                <div class="modal-body" id="messageArea" style="height: 100%">
+
+                </div>
+                <div class="modal-footer">
+                    <input type="text" id="message" placeholder="Type a message..."
+                           autocomplete="off" class="form-control"/>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="disconnect()" >
+                        나가기
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="sendMessage()" >
+                        보내기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Scrolling Modal-->
+
+    <div class="modal fade" id="createChatModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Basic Modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Basic Modal-->
 
 </main><!-- End #main -->
 
@@ -413,7 +181,8 @@
 </footer><!-- End Footer -->
 
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
 
 <script th:src="@{assets/vendor/apexcharts/apexcharts.min.js}"></script>
 <script th:src="@{assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
@@ -430,36 +199,28 @@
 </body>
 
 <script th:inline="javascript">
-
-    var usernamePage = document.querySelector('#username-page');
-    var chatPage = document.querySelector('#chat-page');
-    var usernameForm = document.querySelector('#usernameForm');
-    var messageForm = document.querySelector('#messageForm');
-    var messageInput = document.querySelector('#message');
-    var messageArea = document.querySelector('#messageArea');
-    var connectingElement = document.querySelector('.connecting');
-
     var stompClient = null;
     var username = null;
 
-    var colors = [
-        '#2196F3', '#32c787', '#00BCD4', '#ff5652',
-        '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
-    ];
-
-    function connect(event) {
-        username = document.querySelector('#name').value.trim();
-
-        if(username) {
-            usernamePage.classList.add('hidden');
-            chatPage.classList.remove('hidden');
-
+    function connect() {
+        username = "이재찬"
+        if (username) {
             var socket = new SockJS('/ws');
             stompClient = Stomp.over(socket);
 
             stompClient.connect({}, onConnected, onError);
         }
-        event.preventDefault();
+    }
+
+    // 채팅방 나가기
+    function disconnect() {
+        // disconnect
+        stompClient.send("/app/chat.leaveUser",
+            {},
+            JSON.stringify({sender: username, type: 'LEAVE'})
+        )
+
+        connectingElement.classList.add('hidden');
     }
 
 
@@ -483,73 +244,92 @@
     }
 
 
-    function sendMessage(event) {
-        var messageContent = messageInput.value.trim();
-        if(messageContent && stompClient) {
+    function sendMessage() {
+        var messageContent = $("#message").val().trim();
+        if (messageContent && stompClient) {
             var chatMessage = {
                 sender: username,
-                content: messageInput.value,
+                content: $("#message").val(),
                 type: 'CHAT'
             };
             stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-            messageInput.value = '';
+            $("#message").val('');
         }
-        event.preventDefault();
     }
 
 
     function onMessageReceived(payload) {
         var message = JSON.parse(payload.body);
 
-        var messageElement = document.createElement('li');
-
-        if(message.type === 'JOIN') {
-            messageElement.classList.add('event-message');
-            message.content = message.sender + ' joined!';
+        // var messageElement = document.createElement('li');
+        //
+        if (message.type === 'JOIN') {
+            let joinHtml = `
+              <div class="row">
+                <div class="col-lg-3">
+                </div>
+                <div class="col-lg-6">
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        ${message.sender} joined!
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                </div>
+             </div>
+              `
+            $("#messageArea").append(joinHtml)
         } else if (message.type === 'LEAVE') {
-            messageElement.classList.add('event-message');
-            message.content = message.sender + ' left!';
-        } else {
-            messageElement.classList.add('chat-message');
 
-            var avatarElement = document.createElement('i');
-            var avatarText = document.createTextNode(message.sender[0]);
-            avatarElement.appendChild(avatarText);
-            avatarElement.style['background-color'] = getAvatarColor(message.sender);
-
-            messageElement.appendChild(avatarElement);
-
-            var usernameElement = document.createElement('span');
-            var usernameText = document.createTextNode(message.sender);
-            usernameElement.appendChild(usernameText);
-            messageElement.appendChild(usernameElement);
+            let leaveHtml = `
+                <div class="row">
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="alert border-primary alert-dismissible fade show" role="alert">
+                            ${message.sender} leaved!
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                </div>`
+            $("#messageArea").append(leaveHtml)
+        }else if(message.type === 'CHAT') {
+            let messageText = "";
+            if(message.sender == username) {
+                messageText = `
+                <div class="row">
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="alert border-primary alert-dismissible fade show" role="alert">
+                            <span class="badge bg-secondary">${message.sender}</span> ${message.content}
+                        </div>
+                    </div>
+                </div>`
+            }else{
+                messageText = `
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="alert border-primary alert-dismissible fade show" role="alert">
+                            <span class="badge bg-secondary">${message.sender}</span> ${message.content}
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                </div>`
+            }
+            $("#messageArea").append(messageText)
         }
+    }
 
-        var textElement = document.createElement('p');
-        var messageText = document.createTextNode(message.content);
-        textElement.appendChild(messageText);
-
-        messageElement.appendChild(textElement);
-
-        messageArea.appendChild(messageElement);
-        messageArea.scrollTop = messageArea.scrollHeight;
+    function openChat(){
+        let title = $("#chatTitle").text();
+        $("#chatTitleModal").text(title + "에 참가하시겠습니까?")
     }
 
 
-    function getAvatarColor(messageSender) {
-        var hash = 0;
-        for (var i = 0; i < messageSender.length; i++) {
-            hash = 31 * hash + messageSender.charCodeAt(i);
-        }
-        var index = Math.abs(hash % colors.length);
-        return colors[index];
-    }
-
-    usernameForm.addEventListener('submit', connect, true)
-    messageForm.addEventListener('submit', sendMessage, true)
 
 </script>
-
 
 
 </html>
