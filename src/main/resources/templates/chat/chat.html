@@ -88,9 +88,8 @@
                             <div class="post-item clearfix">
                                 <img src="assets/img/news-1.jpg" alt="">
                                 <h4><a onclick="openChat()" data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                       href="javascript:void(0);" id="chatTitle">SQL
-                                    팀 문의가 필요합니다.</a></h4>
-                                <p>SQL 팀 프로젝트 문의 방</p>
+                                       href="javascript:void(0);" id="chatTitle">Lucky Find</a></h4>
+                                <p>Lucky Find 문의 [24H]</p>
                             </div>
                         </div><!-- End sidebar recent posts-->
                     </div>
@@ -246,7 +245,7 @@
             JSON.stringify({sender: username, type: 'LEAVE'})
         )
 
-        connectingElement.classList.add('hidden');
+        stompClient.disconnect({},{})
     }
 
 
@@ -259,14 +258,10 @@
             {},
             JSON.stringify({sender: username, type: 'JOIN'})
         )
-
-        connectingElement.classList.add('hidden');
     }
 
 
     function onError(error) {
-        connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
-        connectingElement.style.color = 'red';
     }
 
 
@@ -305,7 +300,6 @@
               `
             $("#messageArea").append(joinHtml)
         } else if (message.type === 'LEAVE') {
-
             let leaveHtml = `
                 <div class="row">
                     <div class="col-lg-3">
@@ -324,9 +318,9 @@
             if (message.sender == username) {
                 messageText = `
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                     </div>
-                    <div class="col-lg-9">
+                    <div class="col-lg-6">
                         <div class="alert border-primary alert-dismissible fade show" role="alert">
                             <span class="badge bg-secondary">${message.sender}</span> ${message.content}
                         </div>
@@ -335,12 +329,12 @@
             } else {
                 messageText = `
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-6">
                         <div class="alert border-primary alert-dismissible fade show" role="alert">
                             <span class="badge bg-secondary">${message.sender}</span> ${message.content}
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                     </div>
                 </div>`
             }
@@ -377,8 +371,12 @@
             type: "GET",
             url: "/api/v1/chat/all",
         }).done(function (result) {
-            console.log(result)
+            makeChatList(result)
         })
+    }
+
+    function makeChatList(data) {
+
     }
 
 

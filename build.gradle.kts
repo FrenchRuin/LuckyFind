@@ -33,7 +33,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
-
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -42,7 +41,12 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+    // Devtools
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    // swagger UI
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
 }
 
 tasks.withType<KotlinCompile> {

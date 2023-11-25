@@ -3,6 +3,8 @@ package com.example.luckyfind.controller
 import com.example.luckyfind.model.ChatMessage
 import com.example.luckyfind.model.ChatRequest
 import com.example.luckyfind.service.ChatService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.handler.annotation.SendTo
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "Chat API", description = "Chat 서비스 API Test")
 @RestController
 class ChatController(
     private val chatService: ChatService,
@@ -50,5 +53,6 @@ class ChatController(
     ) = chatService.createChat(request)
 
     @GetMapping("/api/v1/chat/all")
+    @Operation(summary = "모든 채팅방을 호출합니다.")
     fun getChatList() = chatService.getChatList()
 }
