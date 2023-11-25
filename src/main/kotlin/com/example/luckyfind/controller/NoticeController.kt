@@ -13,8 +13,6 @@ class NoticeController(
 ) {
 
     // 공지사항 정보를 가져오기 위한 Notice API
-
-
     // 공지사항 해당 ID로 가져오기
     @GetMapping("/{id}")
     fun getNotice(@PathVariable id: Long) =

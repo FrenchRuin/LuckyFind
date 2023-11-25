@@ -1,14 +1,21 @@
 package com.example.luckyfind.controller
 
 import com.example.luckyfind.model.ChatMessage
+import com.example.luckyfind.model.ChatRequest
+import com.example.luckyfind.service.ChatService
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class ChatController {
+class ChatController(
+    private val chatService: ChatService,
+) {
 
     // 메시지 전송 매핑
     @MessageMapping("/chat.sendMessage")
@@ -34,4 +41,14 @@ class ChatController {
         headerAccessor.sessionAttributes!!["username"] = chatMessage.sender
         return chatMessage
     }
+
+
+    // 채팅생성
+    @PostMapping("/api/v1/chat")
+    fun createChat(
+        @RequestBody request: ChatRequest,
+    ) = chatService.createChat(request)
+
+    @GetMapping("/api/v1/chat/all")
+    fun getChatList() = chatService.getChatList()
 }

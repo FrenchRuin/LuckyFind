@@ -59,11 +59,13 @@
         <div class="accordion mb-3" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         채팅서비스 소개
                     </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <strong>모든 회원들간의 채팅 서비스입니다.</strong> <br>
                         회원들간의 의견공유를 위한 채팅방과 더불어, 현재 진행하고있는 프로젝트 팀원들간의 채팅 서비스도 제공합니다.
@@ -77,13 +79,16 @@
                 <div class="card">
                     <div class="card-body pb-0 mb-3">
                         <h5 class="card-title">All Chat |
-                            <a data-bs-toggle="modal" data-bs-target="#createChatModal" href="javascript:void(0);"><span class="badge rounded-pill bg-success text-white">+</span></a>
+                            <a data-bs-toggle="modal" data-bs-target="#createChatModal" href="javascript:void(0);"><span
+                                    class="badge rounded-pill bg-success text-white">+</span></a>
+                            <input type="text" class="form-control" id="username">
                         </h5>
 
                         <div class="news">
                             <div class="post-item clearfix">
                                 <img src="assets/img/news-1.jpg" alt="">
-                                <h4><a onclick="openChat()" data-bs-toggle="modal" data-bs-target="#confirmModal" href="javascript:void(0);" id="chatTitle">SQL
+                                <h4><a onclick="openChat()" data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                       href="javascript:void(0);" id="chatTitle">SQL
                                     팀 문의가 필요합니다.</a></h4>
                                 <p>SQL 팀 프로젝트 문의 방</p>
                             </div>
@@ -99,8 +104,9 @@
                         <div class="news">
                             <div class="post-item clearfix">
                                 <img src="assets/img/news-1.jpg" alt="">
-                                <h4><a onclick="openChat()" data-bs-toggle="modal" data-bs-target="#confirmModal" href="javascript:void(0);">Lucky Find 커뮤니티</a></h4>
-                                <p>Lucky Find 프로젝트 팀원들간의 공지사항</p>
+                                <h4><a onclick="openChat()" data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                       href="javascript:void(0);">Lucky Find 커뮤니티</a></h4>
+                                <p>Lucky Find 프로젝트 팀원들간의 채팅방</p>
                             </div>
                         </div><!-- End sidebar recent posts-->
                     </div>
@@ -118,13 +124,14 @@
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <span id="chatTitleModal">채팅방에 참가하시겠습니까?</span>
+                    <span id="chatTitleModal">채팅방에 참여하시겠습니까?</span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Close
                     </button>
-                    <button type="button" onclick="connect()" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#chatModal"
+                    <button type="button" onclick="connect()" data-bs-dismiss="modal" data-bs-toggle="modal"
+                            data-bs-target="#chatModal"
                             class="btn btn-primary">Confirm
                     </button>
                 </div>
@@ -137,7 +144,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Chat Modal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="disconnect()"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            onclick="disconnect()"></button>
                 </div>
                 <div class="modal-body" id="messageArea" style="height: 100%">
 
@@ -145,10 +153,10 @@
                 <div class="modal-footer">
                     <input type="text" id="message" placeholder="Type a message..."
                            autocomplete="off" class="form-control"/>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="disconnect()" >
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="disconnect()">
                         나가기
                     </button>
-                    <button type="button" class="btn btn-secondary" onclick="sendMessage()" >
+                    <button type="button" class="btn btn-secondary" onclick="sendMessage()">
                         보내기
                     </button>
                 </div>
@@ -164,11 +172,29 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="chatType" aria-label="Floating label select example">
+                            <option selected="">채팅종류</option>
+                            <option value="ALL">전체회원</option>
+                            <option value="TEAM">프로젝트용</option>
+                        </select>
+                        <label for="chatType">Works with selects</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="title" placeholder="Leave a title here">
+                        <label for="title">제목 [전체 채팅방은 최대 한개만 개설가능합니다.]</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="resnContents"
+                                  style="height: 100px;"></textarea>
+                        <label for="resnContents">생성 사유 [ 부적절한 사유일경우 삭제 처리 됩니다.] </label>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="createChat()">
+                        Create
+                    </button>
                 </div>
             </div>
         </div>
@@ -203,7 +229,7 @@
     var username = null;
 
     function connect() {
-        username = "이재찬"
+        username = $("#username").val()
         if (username) {
             var socket = new SockJS('/ws');
             stompClient = Stomp.over(socket);
@@ -293,9 +319,9 @@
                     </div>
                 </div>`
             $("#messageArea").append(leaveHtml)
-        }else if(message.type === 'CHAT') {
+        } else if (message.type === 'CHAT') {
             let messageText = "";
-            if(message.sender == username) {
+            if (message.sender == username) {
                 messageText = `
                 <div class="row">
                     <div class="col-lg-3">
@@ -306,7 +332,7 @@
                         </div>
                     </div>
                 </div>`
-            }else{
+            } else {
                 messageText = `
                 <div class="row">
                     <div class="col-lg-9">
@@ -322,11 +348,38 @@
         }
     }
 
-    function openChat(){
+    function openChat() {
         let title = $("#chatTitle").text();
         $("#chatTitleModal").text(title + "에 참가하시겠습니까?")
     }
 
+    function createChat() {
+        let request = {
+            "title": $("#title").val(),
+            "resnContents" : $("#resnContents").val(),
+            "chatType" : $("#chatType").val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/api/v1/chat",
+            data: JSON.stringify(request),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+        }).done(function (result) {
+            $("#no").val(result.id);
+            getChatList()
+        })
+    }
+
+    function getChatList() {
+        $.ajax({
+            type: "GET",
+            url: "/api/v1/chat/all",
+        }).done(function (result) {
+            console.log(result)
+        })
+    }
 
 
 </script>

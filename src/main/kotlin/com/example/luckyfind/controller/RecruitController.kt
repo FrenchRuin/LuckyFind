@@ -23,8 +23,7 @@ import javax.print.attribute.standard.Media
 class RecruitController(
     private val recruitService: RecruitService,
 ) {
-
-
+    // recruit Controller
     @GetMapping("/{id}")
     fun getRecruit(@PathVariable id: Long) =
         recruitService.getRecruit(id)
