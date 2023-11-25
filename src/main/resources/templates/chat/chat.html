@@ -84,11 +84,11 @@
                             <input type="text" class="form-control" id="username">
                         </h5>
 
-                        <div class="news">
+                        <div class="news" id="allChatList">
                             <div class="post-item clearfix">
                                 <img src="assets/img/news-1.jpg" alt="">
                                 <h4><a onclick="openChat()" data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                       href="javascript:void(0);" id="chatTitle">Lucky Find</a></h4>
+                                       href="javascript:void(0);">Lucky Find</a></h4>
                                 <p>Lucky Find 문의 [24H]</p>
                             </div>
                         </div><!-- End sidebar recent posts-->
@@ -100,7 +100,7 @@
                     <div class="card-body pb-0 mb-3">
                         <h5 class="card-title">Project Chat |
                         </h5>
-                        <div class="news">
+                        <div class="news" id="teamChatList">
                             <div class="post-item clearfix">
                                 <img src="assets/img/news-1.jpg" alt="">
                                 <h4><a onclick="openChat()" data-bs-toggle="modal" data-bs-target="#confirmModal"
@@ -224,41 +224,47 @@
 </body>
 
 <script th:inline="javascript">
+
     var stompClient = null;
     var username = null;
+    var chatId = "";
 
-    function connect() {
+    $(document).ready(function(){
+        getChatList()
+    })
+
+    function connect(id, title) {
+        chatId = id;
         username = $("#username").val()
         if (username) {
             var socket = new SockJS('/ws');
             stompClient = Stomp.over(socket);
 
-            stompClient.connect({}, onConnected, onError);
+            stompClient.connect({}, function(){
+
+                stompClient.subscribe('/topic/public/' + chatId, onMessageReceived);
+
+                // Tell your username to the server
+                stompClient.send("/app/chat.addUser/" + chatId,
+                    {},
+                    JSON.stringify({sender: username, type: 'JOIN'})
+                )
+
+            }, onError);
         }
     }
 
     // 채팅방 나가기
     function disconnect() {
         // disconnect
-        stompClient.send("/app/chat.leaveUser",
+        stompClient.send("/app/chat.leaveUser/" + chatId,
             {},
             JSON.stringify({sender: username, type: 'LEAVE'})
         )
 
-        stompClient.disconnect({},{})
+        stompClient.disconnect()
     }
 
-
-    function onConnected() {
-        // Subscribe to the Public Topic
-        stompClient.subscribe('/topic/public', onMessageReceived);
-
-        // Tell your username to the server
-        stompClient.send("/app/chat.addUser",
-            {},
-            JSON.stringify({sender: username, type: 'JOIN'})
-        )
-    }
 
 
     function onError(error) {
@@ -273,7 +279,7 @@
                 content: $("#message").val(),
                 type: 'CHAT'
             };
-            stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+            stompClient.send("/app/chat.sendMessage/" + chatId, {}, JSON.stringify(chatMessage));
             $("#message").val('');
         }
     }
@@ -342,8 +348,7 @@
         }
     }
 
-    function openChat() {
-        let title = $("#chatTitle").text();
+    function openChat(title) {
         $("#chatTitleModal").text(title + "에 참가하시겠습니까?")
     }
 
@@ -376,6 +381,40 @@
     }
 
     function makeChatList(data) {
+        let teamList = '';
+        let allList = '';
+        data.forEach(row => {
+
+            if(row.chatType === "ALL") {
+                allList +=
+                    `
+                            <div class="post-item clearfix">
+                                <img src="assets/img/news-1.jpg" alt="">
+                                <h4><a onclick="connect('${row.id}','${row.title}')" data-bs-toggle="modal"
+                            data-bs-target="#chatModal"
+                                       href="javascript:void(0);">${row.title}</a></h4>
+                                <p>Lucky Find 프로젝트 팀원들간의 채팅방</p>
+                            </div>
+
+                    `
+            }else if(row.chatType === "TEAM") {
+                teamList +=
+                    `
+                    <div class="post-item clearfix">
+                                <img src="assets/img/news-1.jpg" alt="">
+                                <h4><a onclick="connect('${row.id}','${row.title}')" data-bs-toggle="modal"
+                            data-bs-target="#chatModal"
+                                       href="javascript:void(0);">${row.title}</a></h4>
+                                <p>Lucky Find 프로젝트 팀원들간의 채팅방</p>
+                            </div>
+
+                    `
+            }
+        })
+        $("#allChatList").empty()
+        $("#teamChatList").empty()
+        $("#allChatList").append(allList)
+        $("#teamChatList").append(teamList)
 
     }
 
