@@ -9,6 +9,10 @@ spring:
       password:
       jdbc-url: jdbc:h2:mem:luckyDB
 
+  security:
+    user:
+      password: 1111
+      name: admin
 
   jpa:
     hibernate:
@@ -30,3 +34,5 @@ springdoc:
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
+
+

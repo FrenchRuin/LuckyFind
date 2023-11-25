@@ -6,8 +6,16 @@ import org.springframework.web.bind.annotation.GetMapping
 @Controller
 class PageController {
 
+    // 로그인 페이지
+    @GetMapping("/login")
+    fun login() = "login/login"
+
+    // 회원가입 페이지
+    @GetMapping("/register")
+    fun register() = "login/register"
+
     // 메인 페이지
-    @GetMapping(value = ["/", "/index"])
+    @GetMapping("/index")
     fun main() = "index"
 
     // 공지사항 Notice 페이지
