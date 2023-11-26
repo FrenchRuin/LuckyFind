@@ -26,6 +26,12 @@
 - WebSocket 
 - Git
 
+## ORM 구조 
+<img src="src/main/resources/images/readme/erd.png"  height="500"/>
+
+- User Entity를 기준으로 마스터성 구조를 가지고있습니다.
+- 업데이트 일자 - 2023.11.26
+
 ---
 
 ### 로그인 및 회원가입 
