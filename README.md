@@ -26,12 +26,29 @@
 - WebSocket 
 - Git
 
-
-## 서비스
-1. 공지사항 서비스
-2. 프로젝트 팀원 모집 서비스
-3. 팀원들간의 대화방 서비스
-4. 회원들간의 의견 공유 서비스
-
 ---
+
+### 로그인 및 회원가입 
+<center>
+<img src="src/main/resources/images/readme/login.png"  height="500"/>
+</center>
+
+- 회원가입시 권한을 선택할 수 있습니다.
+- 선택한 권한으로 회원가입후, 로그인할 시 권한에 따라 사용할 수 있는 서비스만 사용가능합니다.
+- 현재 권한은 ROLE_ADMIN (관리자) / ROLE_USER (사용자) 가 존재합니다.
+
+### 메인페이지
+<center>
+<img src="src/main/resources/images/readme/main.png"  height="500"/>
+</center>
+
+- 메인페이지로 접근시, LuckyFind의 소개와 각 서비스들과 서비스개발 진행정도를 확인 할 수 있습니다.
+- 서비스별 링크 클릭시, 해당 서비스를 사용할 수 있는 페이지로 이동합니다.
+
+
+
+
+
+
+
 
