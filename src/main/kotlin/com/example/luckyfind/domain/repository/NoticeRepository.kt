@@ -7,6 +7,6 @@ import java.time.LocalDateTime
 
 interface NoticeRepository : JpaRepository<Notice, Long> {
 
-   fun getNoticeById(id : Long) : Notice?
+   fun getNoticeByNoticeId(noticeId : Long) : Notice?
 
 }

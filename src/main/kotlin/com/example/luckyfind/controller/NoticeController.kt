@@ -4,6 +4,7 @@ import com.example.luckyfind.model.NoticeRequest
 import com.example.luckyfind.service.NoticeService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 
 @RestController
@@ -22,7 +23,8 @@ class NoticeController(
     @PostMapping
     fun createNotice(
         @RequestBody request: NoticeRequest,
-    ) = noticeService.createNotice(request)
+        principal: Principal,
+    ) = noticeService.createNotice(request, principal.name)
 
     // 공지사항 모두 조회
     @GetMapping("/all")

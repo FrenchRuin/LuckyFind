@@ -2,7 +2,9 @@ package com.example.luckyfind.service
 
 import com.example.luckyfind.domain.entity.Notice
 import com.example.luckyfind.domain.repository.NoticeRepository
+import com.example.luckyfind.domain.repository.UserRepository
 import com.example.luckyfind.exception.NotFoundException
+import com.example.luckyfind.exception.UserNotFoundException
 import com.example.luckyfind.model.NoticeRequest
 import com.example.luckyfind.model.NoticeResponse
 import org.springframework.data.repository.findByIdOrNull
@@ -13,6 +15,7 @@ import java.time.format.DateTimeFormatter
 @Service
 class NoticeService(
     private val noticeRepository: NoticeRepository,
+    private val userRepository: UserRepository,
 ) {
 
 //    with(notice) {
@@ -35,10 +38,12 @@ class NoticeService(
 
     // Notice를 생성한다.
     @Transactional
-    fun createNotice(request: NoticeRequest): NoticeResponse {
+    fun createNotice(request: NoticeRequest, username : String): NoticeResponse {
+        val user = userRepository.findByUsername(username) ?: throw UserNotFoundException("유저가 존재하지 않습니다.")
         val notice = Notice(
             title = request.title,
-            contents = request.contents
+            contents = request.contents,
+            user = user,
         )
         return NoticeResponse(noticeRepository.save(notice))
     }

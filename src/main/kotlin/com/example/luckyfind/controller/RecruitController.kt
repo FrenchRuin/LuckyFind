@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.io.File
+import java.security.Principal
 import javax.print.attribute.standard.Media
 
 @RestController
@@ -35,7 +36,8 @@ class RecruitController(
     @PostMapping
     fun addRecruit(
         @RequestBody request: RecruitRequest,
-    ) = recruitService.addRecruit(request)
+        principal: Principal,
+    ) = recruitService.addRecruit(request, principal.name)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

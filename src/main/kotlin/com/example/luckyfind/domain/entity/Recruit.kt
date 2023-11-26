@@ -2,6 +2,7 @@ package com.example.luckyfind.domain.entity
 
 import com.example.luckyfind.domain.enum.RecruitSkill
 import com.example.luckyfind.domain.enum.RecruitStatus
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -11,7 +12,12 @@ import java.time.LocalDateTime
 class Recruit(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val recruitId: Long? = null,
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    val user : User,
 
     @Column
     var title: String,

@@ -14,7 +14,7 @@ data class NoticeRequest(
 
 // Notice Entity Response
 data class NoticeResponse(
-    val id: Long,
+    val noticeId: Long,
     val title: String,
     val contents: String,
 
@@ -28,7 +28,7 @@ data class NoticeResponse(
         operator fun invoke(notice: Notice) =
             with(notice) {
                 NoticeResponse(
-                    id = id!!,
+                    noticeId = noticeId!!,
                     title = title,
                     contents = contents,
                     createdAt = createdAt,

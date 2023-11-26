@@ -1,5 +1,6 @@
 package com.example.luckyfind.domain.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import org.springframework.security.core.userdetails.UserDetails
 
@@ -21,10 +22,25 @@ data class User(
     @Column
     val enabled: Boolean,
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    @JoinColumn(foreignKey = ForeignKey(name = "userId"))
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
     @JvmField
     var authorities: MutableSet<UserAuthority>? = null,
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @JvmField
+    var notices: List<Notice>? = null,
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @JvmField
+    var recruits: List<Recruit>? = null,
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @JvmField
+    var chats: List<Chat>? = null,
 
     ) : UserDetails {
 

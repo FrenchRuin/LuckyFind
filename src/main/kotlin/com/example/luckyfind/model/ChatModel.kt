@@ -13,7 +13,7 @@ data class ChatRequest(
 )
 
 data class ChatResponse(
-    val id: Long,
+    val chatId: Long,
     val title: String,
     val resnContents: String,
     val chatType: ChatType,
@@ -28,7 +28,7 @@ data class ChatResponse(
         operator fun invoke(chat: Chat) =
             with(chat) {
                 ChatResponse(
-                    id = id!!,
+                    chatId = chatId!!,
                     title = title,
                     resnContents = resnContents,
                     chatType = chatType,

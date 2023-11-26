@@ -29,7 +29,7 @@ data class RecruitRequest(
 
 data class RecruitResponse(
 
-    val id: Long,
+    val recruitId: Long,
     val title: String,
     val contents: String,
 
@@ -55,7 +55,7 @@ data class RecruitResponse(
         operator fun invoke(recruit: Recruit) =
             with(recruit) {
                 RecruitResponse(
-                    id = id!!,
+                    recruitId = recruitId!!,
                     title = title,
                     contents = contents,
                     recruitDateFrom = recruitDateFrom,
