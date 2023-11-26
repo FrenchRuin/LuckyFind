@@ -7,6 +7,7 @@ import com.example.luckyfind.domain.entity.UserAuthority
 data class UserRequest(
     val username: String,
     val password: String,
+    val authority : String,
 )
 
 

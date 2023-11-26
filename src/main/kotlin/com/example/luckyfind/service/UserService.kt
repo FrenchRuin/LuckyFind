@@ -25,8 +25,10 @@ class UserService(
 
 
     @Transactional(readOnly = true)
-    fun findUser(username: String) =
-        userRepository.findByUsername(username)
+    fun findUser(username: String) : UserResponse =
+         UserResponse(userRepository.findByUsername(username) ?: throw UserNotFoundException("유저가 존재하지 않습니다."))
+
+
 
     // 회원가입
     @Transactional
@@ -39,7 +41,7 @@ class UserService(
             )
         )
         //권한 부여
-        addAuthority(user.userId!!, "ROLE_USER")
+        addAuthority(user.userId!!, request.authority)
 
         return UserResponse(user)
     }

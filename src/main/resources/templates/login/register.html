@@ -64,6 +64,16 @@
 
                                 <form class="row g-3">
                                     <div class="col-12">
+                                        <label for="authority" class="form-label">Authority</label>
+                                        <div class="input-group has-validation">
+                                            <select class="form-select" id="authority">
+                                                <option selected="">권한</option>
+                                                <option value="ROLE_ADMIN">ADMIN</option>
+                                                <option value="ROLE_USER">USER</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
                                         <label for="username" class="form-label">Username</label>
                                         <div class="input-group has-validation">
                                             <input type="text" name="username" class="form-control" id="username">
@@ -128,7 +138,8 @@
 
         let request = {
             "username": $("#username").val(),
-            "password": $("#password").val()
+            "password": $("#password").val(),
+            "authority" : $("#authority").val()
         }
 
         $.ajax({

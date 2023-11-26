@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 
 <head>
@@ -113,7 +114,7 @@
                                     <label for="contents">Contents</label>
                                 </div>
                             </div>
-                            <div class="text-center">
+                            <div class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#submitConfirmModal"
                                         class="btn btn-primary">
                                     Submit
@@ -124,82 +125,83 @@
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
                                         class="btn btn-danger">Delete
                                 </button>
-
-
-                                <div class="modal" id="deleteConfirmModal" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Confirm</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                삭제하시겠습니까?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                                <button type="button" onclick="deleteNotice()" data-bs-dismiss="modal"
-                                                        class="btn btn-primary">Confirm
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div><!-- End Disabled Animation Modal-->
-
-                                <div class="modal" id="submitConfirmModal" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Confirm</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                등록하시겠습니까?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                                <button type="button" onclick="addNotice()" data-bs-dismiss="modal"
-                                                        class="btn btn-primary">Confirm
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div><!-- End Disabled Animation Modal-->
-
-                                <div class="modal" id="editConfirmModal" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Confirm</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                수정하시겠습니까?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                                <button type="button" onclick="editNotice()" data-bs-dismiss="modal"
-                                                        class="btn btn-primary">Confirm
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div><!-- End Disabled Animation Modal-->
                             </div>
                         </form><!-- End floating Labels Form -->
+
                     </div>
                 </div>
             </div>
         </div>
+
+
+        <div class="modal" id="deleteConfirmModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        삭제하시겠습니까?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" onclick="deleteNotice()" data-bs-dismiss="modal"
+                                class="btn btn-primary">Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Disabled Animation Modal-->
+
+        <div class="modal" id="submitConfirmModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        등록하시겠습니까?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" onclick="addNotice()" data-bs-dismiss="modal"
+                                class="btn btn-primary">Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Disabled Animation Modal-->
+
+        <div class="modal" id="editConfirmModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        수정하시겠습니까?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" onclick="editNotice()" data-bs-dismiss="modal"
+                                class="btn btn-primary">Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Disabled Animation Modal-->
     </section>
 </main><!-- End #main -->
 

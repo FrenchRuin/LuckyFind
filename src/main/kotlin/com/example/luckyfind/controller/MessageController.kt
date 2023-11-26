@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor
 import org.springframework.web.bind.annotation.RestController
+import java.security.Principal
 
 @RestController
 class MessageController {
@@ -17,7 +18,9 @@ class MessageController {
     fun sendMessage(
         @DestinationVariable id: Long,
         @Payload message: Message?,
+        principal: Principal,
     ): Message? {
+        message!!.sender = principal.name
         return message
     }
 
@@ -28,8 +31,10 @@ class MessageController {
         @DestinationVariable id : Long,
         @Payload message: Message,
         headerAccessor: SimpMessageHeaderAccessor,
+        principal: Principal,
     ): Message? {
-        headerAccessor.sessionAttributes!!["username"] = message.sender
+        headerAccessor.sessionAttributes!!["username"] = principal.name
+        message.sender = principal.name
         return message
     }
 
@@ -39,8 +44,11 @@ class MessageController {
     fun leaveUser(
         @DestinationVariable id : Long,
         @Payload message: Message,
-        headerAccessor: SimpMessageHeaderAccessor): Message? {
-        headerAccessor.sessionAttributes!!["username"] = message.sender
+        headerAccessor: SimpMessageHeaderAccessor,
+        principal: Principal,
+        ): Message? {
+        headerAccessor.sessionAttributes!!["username"] = principal.name
+        message.sender = principal.name
         return message
     }
 }
