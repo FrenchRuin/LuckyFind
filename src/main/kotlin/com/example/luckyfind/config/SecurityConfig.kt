@@ -22,22 +22,29 @@ class SecurityConfig {
             }
             headers {
                 frameOptions {
-                    sameOrigin
+                    sameOrigin = true
                 }
             }
             formLogin {
                 loginPage = "/login"
+                loginProcessingUrl = "/login-process"
+                defaultSuccessUrl("/index", false)
+                permitAll()
             }
+
             authorizeHttpRequests {
                 authorize("/swagger-ui/*", permitAll)
-                authorize("/assets/**",permitAll)
+                authorize(PathRequest.toH2Console(), permitAll)
+                authorize("/h2-console/**", permitAll)
+                authorize("/assets/**", permitAll)
                 authorize("/login", permitAll)
+                authorize("/api/v1/user/signUp", permitAll)
                 authorize("/register", permitAll)
                 authorize(anyRequest, authenticated)
             }
-            sessionManagement {
-                sessionCreationPolicy = SessionCreationPolicy.STATELESS
-            }
+//            sessionManagement {
+//                sessionCreationPolicy = SessionCreationPolicy.STATELESS
+//            }
         }
         return http.build()!!
     }

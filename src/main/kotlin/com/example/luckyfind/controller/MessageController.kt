@@ -1,6 +1,6 @@
 package com.example.luckyfind.controller
 
-import com.example.luckyfind.model.ChatMessage
+import com.example.luckyfind.model.Message
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
@@ -16,9 +16,9 @@ class MessageController {
     @SendTo("/topic/public/{id}")
     fun sendMessage(
         @DestinationVariable id: Long,
-        @Payload chatMessage: ChatMessage?
-    ): ChatMessage? {
-        return chatMessage
+        @Payload message: Message?,
+    ): Message? {
+        return message
     }
 
     //채팅참가자 등록
@@ -26,11 +26,11 @@ class MessageController {
     @SendTo("/topic/public/{id}")
     fun addUser(
         @DestinationVariable id : Long,
-        @Payload chatMessage: ChatMessage,
+        @Payload message: Message,
         headerAccessor: SimpMessageHeaderAccessor,
-    ): ChatMessage? {
-        headerAccessor.sessionAttributes!!["username"] = chatMessage.sender
-        return chatMessage
+    ): Message? {
+        headerAccessor.sessionAttributes!!["username"] = message.sender
+        return message
     }
 
     //채팅참가자 퇴장
@@ -38,9 +38,9 @@ class MessageController {
     @SendTo("/topic/public/{id}")
     fun leaveUser(
         @DestinationVariable id : Long,
-        @Payload chatMessage: ChatMessage,
-        headerAccessor: SimpMessageHeaderAccessor): ChatMessage? {
-        headerAccessor.sessionAttributes!!["username"] = chatMessage.sender
-        return chatMessage
+        @Payload message: Message,
+        headerAccessor: SimpMessageHeaderAccessor): Message? {
+        headerAccessor.sessionAttributes!!["username"] = message.sender
+        return message
     }
 }

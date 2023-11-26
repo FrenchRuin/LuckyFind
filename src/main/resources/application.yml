@@ -16,13 +16,17 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
   devtools:
     livereload:
       enabled: true
   thymeleaf:
     cache: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
 # Spring Doc
 springdoc:

@@ -6,12 +6,6 @@ import com.example.luckyfind.domain.enum.MessageType
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime
 
-data class ChatMessage(
-    var type: MessageType,
-    var content: String?,
-    var sender: String?
-)
-
 data class ChatRequest(
     val title: String,
     val resnContents: String,
