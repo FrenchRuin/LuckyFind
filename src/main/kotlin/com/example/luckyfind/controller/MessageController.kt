@@ -16,7 +16,7 @@ class MessageController {
     @MessageMapping("/chat.sendMessage/{id}")
     @SendTo("/topic/public/{id}")
     fun sendMessage(
-        @DestinationVariable id: Long,
+        @DestinationVariable id: String,
         @Payload message: Message?,
         principal: Principal,
     ): Message? {
@@ -28,7 +28,7 @@ class MessageController {
     @MessageMapping("/chat.addUser/{id}")
     @SendTo("/topic/public/{id}")
     fun addUser(
-        @DestinationVariable id : Long,
+        @DestinationVariable id: String,
         @Payload message: Message,
         headerAccessor: SimpMessageHeaderAccessor,
         principal: Principal,
@@ -42,11 +42,11 @@ class MessageController {
     @MessageMapping("/chat.leaveUser/{id}")
     @SendTo("/topic/public/{id}")
     fun leaveUser(
-        @DestinationVariable id : Long,
+        @DestinationVariable id: String,
         @Payload message: Message,
         headerAccessor: SimpMessageHeaderAccessor,
         principal: Principal,
-        ): Message? {
+    ): Message? {
         headerAccessor.sessionAttributes!!["username"] = principal.name
         message.sender = principal.name
         return message

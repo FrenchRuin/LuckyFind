@@ -315,7 +315,7 @@
             $("#messageArea").append(leaveHtml)
         } else if (message.type === 'CHAT') {
             let messageText = "";
-            if (message.sender == username) {
+            if (message.sender == $("#usernameTop").text()) {
                 messageText = `
                 <div class="row">
                     <div class="col-lg-6">
@@ -411,22 +411,6 @@
         $("#teamChatList").append(teamList)
 
     }
-
-    function getUserInfo(){
-
-        $.ajax({
-            type: "GET",
-            url: "/api/v1/user",
-        }).done(function (result) {
-            $("#username").text(result.username)
-            $("#authority").text(result.authorities[0].authority)
-            $("#usernameTop").text(result.username)
-        })
-    }
-
-
-
-
 </script>
 
 
