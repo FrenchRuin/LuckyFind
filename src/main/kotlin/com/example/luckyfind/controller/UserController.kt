@@ -13,21 +13,24 @@ import java.security.Principal
 
 @RestController
 @RequestMapping("/api/v1/user")
-class UserController (
+class UserController(
     private val userService: UserService,
-){
+) {
 
     @PostMapping("/signUp")
     fun signUp(
-        @RequestBody request : UserRequest,
+        @RequestBody request: UserRequest,
     ) = userService.signUp(request)
 
+    @PostMapping("/login")
+    fun login(
+        @RequestBody request: UserRequest,
+    ) = userService.login(request)
 
     @GetMapping
     fun getUserInfo(
         principal: Principal,
-    ) : UserResponse
-      = userService.findUser(principal.name)
+    ): UserResponse = userService.findUser(principal.name)
 
 
 }

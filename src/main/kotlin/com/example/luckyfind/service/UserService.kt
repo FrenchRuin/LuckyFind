@@ -1,12 +1,17 @@
 package com.example.luckyfind.service
 
+import com.example.luckyfind.config.TokenProvider
 import com.example.luckyfind.domain.entity.User
 import com.example.luckyfind.domain.entity.UserAuthority
 import com.example.luckyfind.domain.enum.AuthorityType
 import com.example.luckyfind.domain.repository.UserRepository
 import com.example.luckyfind.exception.UserNotFoundException
+import com.example.luckyfind.model.TokenModel
 import com.example.luckyfind.model.UserRequest
 import com.example.luckyfind.model.UserResponse
+import mu.KotlinLogging
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -17,8 +22,12 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: BCryptPasswordEncoder,
+    private val tokenProvider: TokenProvider,
+    private val authenticationManagerBuilder: AuthenticationManagerBuilder,
+) : UserDetailsService {
 
-    ) : UserDetailsService {
+
+    private val log = KotlinLogging.logger {}
 
     override fun loadUserByUsername(username: String): UserDetails =
         userRepository.findByUsername(username) ?: throw UserNotFoundException("유저가 존재하지 않습니다.")
@@ -55,6 +64,16 @@ class UserService(
                 userRepository.save(it)
             }
         }
+    }
+
+    @Transactional
+    fun login(request: UserRequest): TokenModel {
+
+        val authenticationToken = UsernamePasswordAuthenticationToken(request.username, request.password)
+        val authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
+        val token = tokenProvider.createToken(authentication)
+        log.trace { "토큰 >>>>> $token" }
+        return token
     }
 }
 

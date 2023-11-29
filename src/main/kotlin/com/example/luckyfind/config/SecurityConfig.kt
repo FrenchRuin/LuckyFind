@@ -4,14 +4,18 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
-class SecurityConfig {
+@EnableWebSecurity
+class SecurityConfig(
+    private val tokenProvider: TokenProvider,
+) {
 
     // 기본 filterchain  >> DSL 형식
     @Bean
@@ -38,14 +42,18 @@ class SecurityConfig {
                 authorize("/h2-console/**", permitAll)
                 authorize("/assets/**", permitAll)
                 authorize("/login", permitAll)
+                authorize("/api/v1/user/login", permitAll)
                 authorize("/api/v1/user/signUp", permitAll)
                 authorize("/register", permitAll)
                 authorize(anyRequest, authenticated)
             }
-//            sessionManagement {
-//                sessionCreationPolicy = SessionCreationPolicy.STATELESS
-//            }
+            sessionManagement {
+                // 세션을 사용하지 않고 JWT를 사용할 예정
+                sessionCreationPolicy = SessionCreationPolicy.STATELESS
+            }
         }
+        // JWT token
+        http.addFilterBefore(JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter::class.java)
         return http.build()!!
     }
 

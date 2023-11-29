@@ -14,3 +14,9 @@ data class NotFoundException(
 data class UserNotFoundException(
     override val message: String,
 ) : ServerException(404, message)
+
+// 토큰 권한 없을시 예외 커스텀 처리
+data class TokenException(
+    override val message: String,
+) : ServerException(404, message)
+

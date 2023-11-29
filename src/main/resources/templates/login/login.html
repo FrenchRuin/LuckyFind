@@ -20,6 +20,9 @@
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
+  <!-- Vendor JS Files -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
   <!-- Vendor CSS Files -->
   <link th:href="@{assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
   <link th:href="@{assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
@@ -59,20 +62,20 @@
                     <p class="text-center small">Enter your username & password to login</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" method="post" th:action="@{/login-process}" novalidate>
+                  <form class="row g-3 needs-validation" novalidate>
 
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Username</label>
+                      <label for="username" class="form-label">Username</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
+                        <input type="text" name="username" class="form-control" id="username" required>
                         <div class="invalid-feedback">Please enter your username.</div>
                       </div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" id="password" required>
                       <div class="invalid-feedback">Please enter your password!</div>
                     </div>
 
@@ -83,7 +86,7 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
+                      <button class="btn btn-primary w-100" type="button" onclick="login()">Login</button>
                     </div>
                     <div class="col-12">
                       <p class="small mb-0">Don't have account? <a th:href="@{/register}">Create an account</a></p>
@@ -126,4 +129,25 @@
 
 </body>
 
+<script th:inline="javascript">
+  function login() {
+
+    let request = {
+      "username": $("#username").val(),
+      "password": $("#password").val(),
+      "authority" : "ROLE_USER"
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/api/v1/user/login",
+      data: JSON.stringify(request),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+    }).done(function (result) {
+      location.href="/login";
+    })
+  }
+
+</script>
 </html>
