@@ -1,6 +1,7 @@
 # JWT 관련 Yml 파일
 secret-key: NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO1Yw3JpBBgI3nVPEahqxeY8qbPSFGyzyEVxnl4AQcrnVneI
 issuer: devLee
+expiration-hours: 3
 
 ## SecretKey
 ## 알고리즘으로 HS512를 사용할 것이기 때문에 길이가 512비트(64바이트) 이상인 비밀키

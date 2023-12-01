@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
@@ -20,15 +21,11 @@ class SecurityConfig(
     private val jwtAuthenticationFilter: JwtAuthenticationFilter,
 ) {
 
-
     // 기본 filterchain  >> DSL 형식
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.invoke {
             csrf {
-                disable()
-            }
-            httpBasic {
                 disable()
             }
             headers {
@@ -61,7 +58,7 @@ class SecurityConfig(
         }
         // JWT token
         http
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter::class.java)
         return http.build()!!
     }
 

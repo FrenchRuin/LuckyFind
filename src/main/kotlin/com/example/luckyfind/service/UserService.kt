@@ -6,14 +6,11 @@ import com.example.luckyfind.domain.entity.UserAuthority
 import com.example.luckyfind.domain.enum.AuthorityType
 import com.example.luckyfind.domain.repository.UserRepository
 import com.example.luckyfind.exception.UserNotFoundException
+import com.example.luckyfind.model.LogInResponse
 import com.example.luckyfind.model.TokenModel
 import com.example.luckyfind.model.UserRequest
 import com.example.luckyfind.model.UserResponse
-import com.example.luckyfind.utils.JwtUtil
 import mu.KotlinLogging
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -24,12 +21,8 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: BCryptPasswordEncoder,
-    private val jwtUtil: JwtUtil,
-//    private val authenticationManager: AuthenticationManager,
+    private val tokenProvider: TokenProvider,
 ) : UserDetailsService {
-
-
-    private val log = KotlinLogging.logger {}
 
     override fun loadUserByUsername(username: String): UserDetails =
         userRepository.findByUsername(username) ?: throw UserNotFoundException("유저가 존재하지 않습니다.")
@@ -69,14 +62,13 @@ class UserService(
     }
 
     @Transactional
-    fun login(request: UserRequest): TokenModel {
-        val token = jwtUtil.createToken(request)
-        val tokenResponse = TokenModel(
-            username = request.username,
-            token = token
+    fun login(request: UserRequest): LogInResponse {
+        val token = tokenProvider.createToken(request.username+":ROLE_USER")
+        println(token)
+        return LogInResponse(
+            request.username,
+            token,
         )
-        println("token >> $tokenResponse")
-        return tokenResponse
     }
 
 }

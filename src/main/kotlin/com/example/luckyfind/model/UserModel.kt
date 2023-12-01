@@ -3,14 +3,8 @@ package com.example.luckyfind.model
 import com.example.luckyfind.domain.entity.User
 import com.example.luckyfind.domain.entity.UserAuthority
 
-// 로그인 요청 모델
-data class LoginRequest(
-    val username: String,
-    val password: String,
-)
-
-// 로그인 응답 모델
-data class LoginResponse(
+// 로그인응답 response
+data class LogInResponse(
     val username: String,
     val token: String,
 )
