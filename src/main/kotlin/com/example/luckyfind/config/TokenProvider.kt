@@ -26,7 +26,7 @@ import java.util.stream.Collectors
 import javax.crypto.spec.SecretKeySpec
 
 
-@Component
+//@Component
 @PropertySource("classpath:jwt.yml")
 class TokenProvider(
     @Value("\${secret-key}")

@@ -1,8 +1,11 @@
 package com.example.luckyfind.config
 
+import com.example.luckyfind.service.UserService
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
@@ -14,14 +17,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val tokenProvider: TokenProvider,
+    private val jwtAuthenticationFilter: JwtAuthenticationFilter,
 ) {
+
 
     // 기본 filterchain  >> DSL 형식
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.invoke {
             csrf {
+                disable()
+            }
+            httpBasic {
                 disable()
             }
             headers {
@@ -31,7 +38,7 @@ class SecurityConfig(
             }
             formLogin {
                 loginPage = "/login"
-                loginProcessingUrl = "/login-process"
+//                loginProcessingUrl = "/api/v1/user/login"
                 defaultSuccessUrl("/index", false)
                 permitAll()
             }
@@ -53,7 +60,8 @@ class SecurityConfig(
             }
         }
         // JWT token
-        http.addFilterBefore(JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter::class.java)
+        http
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()!!
     }
 

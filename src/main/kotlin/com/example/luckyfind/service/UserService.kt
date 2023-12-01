@@ -9,7 +9,9 @@ import com.example.luckyfind.exception.UserNotFoundException
 import com.example.luckyfind.model.TokenModel
 import com.example.luckyfind.model.UserRequest
 import com.example.luckyfind.model.UserResponse
+import com.example.luckyfind.utils.JwtUtil
 import mu.KotlinLogging
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.core.userdetails.UserDetails
@@ -22,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: BCryptPasswordEncoder,
-    private val tokenProvider: TokenProvider,
-    private val authenticationManagerBuilder: AuthenticationManagerBuilder,
+    private val jwtUtil: JwtUtil,
+//    private val authenticationManager: AuthenticationManager,
 ) : UserDetailsService {
 
 
@@ -68,13 +70,15 @@ class UserService(
 
     @Transactional
     fun login(request: UserRequest): TokenModel {
-
-        val authenticationToken = UsernamePasswordAuthenticationToken(request.username, request.password)
-        val authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
-        val token = tokenProvider.createToken(authentication)
-        log.trace { "토큰 >>>>> $token" }
-        return token
+        val token = jwtUtil.createToken(request)
+        val tokenResponse = TokenModel(
+            username = request.username,
+            token = token
+        )
+        println("token >> $tokenResponse")
+        return tokenResponse
     }
+
 }
 
 
