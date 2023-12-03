@@ -1,5 +1,6 @@
 package com.example.luckyfind.config
 
+import com.example.luckyfind.domain.repository.UserRepository
 import com.example.luckyfind.utils.JWTUtils
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
@@ -23,6 +24,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 class SecurityConfig(
     private val authenticationConfiguration: AuthenticationConfiguration,
     private val jwtUtils: JWTUtils,
+    private val userRepository: UserRepository,
 ) {
 
     // Cors Filter Custom
@@ -34,21 +36,18 @@ class SecurityConfig(
         config.allowedMethods = listOf("*")
         config.allowedHeaders = listOf("*")
         val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/api/v1/**", config)
+        source.registerCorsConfiguration("/**", config)
         return source
     }
 
     // Filter Chain
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.cors {
-            corsConfigurationSource()
-        }
+//        http.cors {
+//            corsConfigurationSource()
+//        }
         http.invoke {
             csrf {
-                disable()
-            }
-            httpBasic {
                 disable()
             }
             headers {
@@ -60,7 +59,7 @@ class SecurityConfig(
                 disable()
             }
             authorizeHttpRequests {
-                authorize("/swagger-ui/*", permitAll)
+                authorize("/swagger-ui/**", permitAll)
                 authorize(PathRequest.toH2Console(), permitAll)
                 authorize("/h2-console/**", permitAll)
                 authorize("/assets/**", permitAll)
@@ -74,15 +73,14 @@ class SecurityConfig(
                 // 세션을 사용하지 않고 JWT를 사용할 예정
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
-
         }
-        http.addFilterBefore(
+        http.addFilterAt(
             JwtAuthenticationFilter(authenticationManager(), jwtUtils),
             UsernamePasswordAuthenticationFilter::class.java
         )
-        http.addFilterBefore(
-            JwtVerificationFilter(jwtUtils),
-            UsernamePasswordAuthenticationFilter::class.java
+        http.addFilterAt(
+            JwtAuthorizationFilter(userRepository, jwtUtils),
+            BasicAuthenticationFilter::class.java
         )
         // JWT token
         return http.build()!!
@@ -91,7 +89,6 @@ class SecurityConfig(
     @Bean
     fun authenticationManager(): AuthenticationManager =
         authenticationConfiguration.authenticationManager
-
 
     // Password Encoder
     @Bean

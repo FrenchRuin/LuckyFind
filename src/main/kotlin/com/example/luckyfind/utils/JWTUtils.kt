@@ -36,7 +36,7 @@ class JWTUtils(
         .setExpiration(Date.from(Instant.now().plus(expirationHours, ChronoUnit.HOURS)))
         .compact()!!
 
-    fun chaeckTokenValid(token: String) : String? =
+    fun checkTokenValid(token: String) : String? =
         Jwts.parserBuilder()
             .setSigningKey(secretKey.toByteArray())
             .build()

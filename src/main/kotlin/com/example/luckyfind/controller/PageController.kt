@@ -15,7 +15,7 @@ class PageController {
     fun register() = "login/register"
 
     // 메인 페이지
-    @GetMapping()
+    @GetMapping("/index")
     fun main() = "index"
 
     // 공지사항 Notice 페이지

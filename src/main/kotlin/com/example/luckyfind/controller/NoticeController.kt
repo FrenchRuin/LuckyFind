@@ -40,7 +40,7 @@ class NoticeController(
     }
 
     //  공지사항 삭제
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteNotice(@PathVariable id: Long) = noticeService.deleteNotice(id)
 }
