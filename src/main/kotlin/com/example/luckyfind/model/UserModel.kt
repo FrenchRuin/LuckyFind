@@ -15,7 +15,6 @@ data class UserRequest(
     val authority: String,
 )
 
-
 data class UserResponse(
     val userId: Long,
     val username: String,

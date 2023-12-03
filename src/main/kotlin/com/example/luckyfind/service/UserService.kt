@@ -36,15 +36,16 @@ class UserService(
     // 회원가입
     @Transactional
     fun signUp(request: UserRequest): UserResponse {
-        val user = userRepository.save(
+        val user = userRepository.findByUsername(request.username) ?: userRepository.save(
             User(
                 username = request.username,
                 password = passwordEncoder.encode(request.password),
                 enabled = true,
             )
-        )
-        //권한 부여
-        addAuthority(user.userId!!, request.authority)
+        ).also {
+            //권한 부여
+            addAuthority(it.userId!!, request.authority)
+        }
 
         return UserResponse(user)
     }
@@ -54,8 +55,7 @@ class UserService(
         userRepository.findById(userId).ifPresent {
             val newAuthority = UserAuthority(userId, it, AuthorityType(authority))
             if (it.authorities == null) {
-                val authoritySet = mutableSetOf(newAuthority)
-                it.authorities = authoritySet
+                it.authorities = mutableSetOf(newAuthority)
                 userRepository.save(it)
             }
         }
@@ -63,7 +63,10 @@ class UserService(
 
     @Transactional
     fun login(request: UserRequest): LogInResponse {
-        val token = tokenProvider.createToken(request.username+":ROLE_USER")
+        userRepository.findByUsername(request.username)?.takeIf {
+            passwordEncoder.matches(request.password, it.password)
+        } ?: throw UserNotFoundException("유저가 존재하지 않습니다.")
+        val token = tokenProvider.createToken(request.username + ":ROLE_USER")
         println(token)
         return LogInResponse(
             request.username,
