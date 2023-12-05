@@ -231,6 +231,7 @@
             $("#contents").val(result.contents);
             $("#title").val(result.title);
             $("#no").val(result.id);
+
         })
     }
 
@@ -240,6 +241,7 @@
             url: "/api/v1/notice/all",
         }).done(function (result) {
             tableSetting(result)
+            console.log(result.headers)
         })
     }
 

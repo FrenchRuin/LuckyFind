@@ -23,6 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableWebSecurity
 class SecurityConfig(
     private val authenticationConfiguration: AuthenticationConfiguration,
+    private val jwtAuthenticationSuccessHandler: JwtAuthenticationSuccessHandler,
     private val jwtUtils: JWTUtils,
     private val userRepository: UserRepository,
 ) {
@@ -35,6 +36,7 @@ class SecurityConfig(
         config.allowedOrigins = listOf("*")
         config.allowedMethods = listOf("*")
         config.allowedHeaders = listOf("*")
+        config.addExposedHeader("Authorization")
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", config)
         return source
@@ -43,9 +45,9 @@ class SecurityConfig(
     // Filter Chain
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-//        http.cors {
-//            corsConfigurationSource()
-//        }
+        http.cors {
+            corsConfigurationSource()
+        }
         http.invoke {
             csrf {
                 disable()
@@ -55,9 +57,10 @@ class SecurityConfig(
                     sameOrigin = true
                 }
             }
-            formLogin{
+            formLogin {
                 disable()
             }
+
             authorizeHttpRequests {
                 authorize("/swagger-ui/**", permitAll)
                 authorize(PathRequest.toH2Console(), permitAll)
@@ -74,11 +77,11 @@ class SecurityConfig(
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
         }
-        http.addFilterAt(
-            JwtAuthenticationFilter(authenticationManager(), jwtUtils),
+        http.addFilterBefore(
+            jwtAuthenticationFilter(),
             UsernamePasswordAuthenticationFilter::class.java
         )
-        http.addFilterAt(
+        http.addFilterBefore(
             JwtAuthorizationFilter(userRepository, jwtUtils),
             BasicAuthenticationFilter::class.java
         )
@@ -89,6 +92,14 @@ class SecurityConfig(
     @Bean
     fun authenticationManager(): AuthenticationManager =
         authenticationConfiguration.authenticationManager
+
+    @Bean
+    fun jwtAuthenticationFilter() : JwtAuthenticationFilter{
+        val jwtAuthenticationFilter = JwtAuthenticationFilter(jwtUtils)
+        jwtAuthenticationFilter.setAuthenticationManager(authenticationManager())
+        jwtAuthenticationFilter.setAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler)
+        return jwtAuthenticationFilter
+    }
 
     // Password Encoder
     @Bean

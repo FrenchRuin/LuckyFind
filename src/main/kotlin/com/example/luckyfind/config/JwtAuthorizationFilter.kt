@@ -34,18 +34,22 @@ class JwtAuthorizationFilter(
         println(request.servletPath) // 요청 path
 
         val header = request.getHeader("Authorization")
-
-        if (header == null || !header.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response)
-            return
-        }
+        println(header)
+//        if (header == null || !header.startsWith("Bearer ")) {
+//            filterChain.doFilter(request, response)
+//            return
+//        }
 
         val user = userRepository.findByUsername("admin")
         val authentication: Authentication = UsernamePasswordAuthenticationToken(
             user, user!!.password, user.authorities
         )
+
+        val token = jwtUtils.generateToken(authentication)
+
         SecurityContextHolder.getContext().authentication = authentication
 
+        response.setHeader("Authorization", "Bearer $token")
         filterChain.doFilter(request, response);
     }
 
