@@ -196,7 +196,6 @@
        req.open('GET', document.location, false);
        req.send(null);
        let token = req.getResponseHeader("authorization")
-       console.log(token)
        localStorage.setItem("token", token) // localStorage에 저장
    })
 </script>

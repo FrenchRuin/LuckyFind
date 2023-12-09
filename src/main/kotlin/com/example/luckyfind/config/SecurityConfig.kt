@@ -1,6 +1,7 @@
 package com.example.luckyfind.config
 
 import com.example.luckyfind.domain.repository.UserRepository
+import com.example.luckyfind.utils.CookieUtils
 import com.example.luckyfind.utils.JWTUtils
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
@@ -26,6 +27,7 @@ class SecurityConfig(
     private val authenticationConfiguration: AuthenticationConfiguration,
     private val jwtAuthenticationSuccessHandler: JwtAuthenticationSuccessHandler,
     private val jwtUtils: JWTUtils,
+    private val cookieUtils: CookieUtils,
     private val userRepository: UserRepository,
 ) {
 
@@ -61,6 +63,9 @@ class SecurityConfig(
             formLogin {
                 disable()
             }
+            logout {
+                logoutSuccessUrl = "/login"
+            }
             authorizeHttpRequests {
                 authorize("/swagger-ui/**", permitAll)
                 authorize(PathRequest.toH2Console(), permitAll)
@@ -82,24 +87,27 @@ class SecurityConfig(
             UsernamePasswordAuthenticationFilter::class.java
         )
         http.addFilterBefore(
-            JwtAuthorizationFilter(userRepository, jwtUtils),
-            BasicAuthenticationFilter::class.java
+            jwtAuthorizationFilter(),
+            UsernamePasswordAuthenticationFilter::class.java
         )
         // JWT token
         return http.build()!!
     }
 
-    @Bean
     fun authenticationManager(): AuthenticationManager =
         authenticationConfiguration.authenticationManager
 
-    @Bean
-    fun jwtAuthenticationFilter() : JwtAuthenticationFilter{
+    fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
         val jwtAuthenticationFilter = JwtAuthenticationFilter(jwtUtils)
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager())
         jwtAuthenticationFilter.setAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler)
         return jwtAuthenticationFilter
     }
+
+    // OncePerRequestFilter implements
+    // refreshToken 검증 및 AccessToken 재발급
+    fun jwtAuthorizationFilter(): JwtAuthorizationFilter =
+        JwtAuthorizationFilter(userRepository, jwtUtils, cookieUtils)
 
     // Password Encoder
     @Bean

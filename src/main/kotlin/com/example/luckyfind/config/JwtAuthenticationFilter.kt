@@ -1,30 +1,19 @@
 package com.example.luckyfind.config
 
-import com.example.luckyfind.domain.entity.User
-import com.example.luckyfind.model.UserResponse
 import com.example.luckyfind.utils.JWTUtils
 import jakarta.servlet.FilterChain
-import jakarta.servlet.ServletRequest
-import jakarta.servlet.ServletResponse
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.AuthenticationException
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.AuthenticationFailureHandler
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.web.filter.GenericFilterBean
 
 class JwtAuthenticationFilter(
     private val jwtUtils: JWTUtils,
 ) : UsernamePasswordAuthenticationFilter() {
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
-
         // username && password parameter
         println(request?.getParameter(this.usernameParameter))
         println(request?.getParameter(this.passwordParameter))
@@ -44,5 +33,31 @@ class JwtAuthenticationFilter(
         println("로그인 시도 종료 ==========================")
         // Authentication return
         return authentication
+    }
+
+    override fun successfulAuthentication(
+        request: HttpServletRequest?,
+        response: HttpServletResponse?,
+        chain: FilterChain?,
+        authResult: Authentication?
+    ) {
+        println("로그인성공 메소드 시작==============================")
+        // authResult
+        println(authResult?.principal)
+        println(authResult?.credentials)
+
+        // token model //
+        val token = jwtUtils.generateToken(authResult!!)
+        println(token)
+
+        val cookie = Cookie("refreshToken", token.refreshToken)
+        cookie.isHttpOnly = true // prevent access Browser to find refreshToken
+        cookie.secure = true    // only https
+        response?.addCookie(cookie) // refresh Token in Cookie
+        response?.setHeader("Authorization", "Bearer ${token.accessToken}") // accessToken in Header
+
+        println("로그인성공 메소드 종료 ====================")
+
+        super.successfulAuthentication(request, response, chain, authResult)
     }
 }
