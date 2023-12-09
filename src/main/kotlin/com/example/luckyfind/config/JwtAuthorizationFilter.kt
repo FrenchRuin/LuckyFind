@@ -49,8 +49,8 @@ class JwtAuthorizationFilter(
 
         SecurityContextHolder.getContext().authentication = authentication
 
-        response.setHeader("Authorization", "Bearer $token")
-        filterChain.doFilter(request, response);
+        response.setHeader("Authorization", "Bearer ${token.accessToken}")
+        filterChain.doFilter(request, response)
     }
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {

@@ -45,42 +45,4 @@ class JwtAuthenticationFilter(
         // Authentication return
         return authentication
     }
-
-    // 인증성공
-    override fun successfulAuthentication(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        chain: FilterChain?,
-        authResult: Authentication?
-    ) {
-        println("인증 완료 ==============")
-        val userResponse: UserResponse = with((authResult?.principal as User)) {
-            UserResponse(
-                username = this.username,
-                password = this.password,
-                authorities = this.authorities!!,
-                userId = this.userId!!,
-                enabled = this.enabled
-            )
-        }
-        println(userResponse) // 인증정보
-        val token = jwtUtils.createToken(userResponse)
-        println(token)
-
-        SecurityContextHolder.getContext().authentication = authResult
-        // 토큰 헤더에 추가
-        response?.addHeader("Authorization", "Bearer $token")
-//        response?.sendRedirect("/notice")
-        super.successfulAuthentication(request, response, chain, authResult)
-    }
-
-    override fun unsuccessfulAuthentication(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        failed: AuthenticationException?
-    ) {
-        println("실패??")
-        super.unsuccessfulAuthentication(request, response, failed)
-    }
-
 }

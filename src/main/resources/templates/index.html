@@ -21,6 +21,9 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
           rel="stylesheet">
 
+    <!-- Vendor JS Files -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- Vendor CSS Files -->
     <link th:href="@{assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
@@ -184,6 +187,19 @@
 <script th:src="@{assets/js/main.js}"></script>
 
 </body>
+
+<script th:inline="javascript">
+
+
+   $(function(){
+       let req = new XMLHttpRequest();
+       req.open('GET', document.location, false);
+       req.send(null);
+       let token = req.getResponseHeader("authorization")
+       console.log(token)
+       localStorage.setItem("token", token) // localStorage에 저장
+   })
+</script>
 
 
 </html>

@@ -1,11 +1,8 @@
 package com.example.luckyfind.utils
 
-import com.example.luckyfind.domain.entity.User
-import com.example.luckyfind.domain.entity.UserAuthority
 import com.example.luckyfind.domain.repository.UserRepository
 import com.example.luckyfind.exception.TokenException
 import com.example.luckyfind.model.TokenModel
-import com.example.luckyfind.model.UserRequest
 import com.example.luckyfind.model.UserResponse
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -15,14 +12,12 @@ import org.springframework.context.annotation.PropertySource
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Service
 import java.sql.Date
 import java.sql.Timestamp
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import java.util.*
 import java.util.stream.Collectors
 import javax.crypto.spec.SecretKeySpec
 

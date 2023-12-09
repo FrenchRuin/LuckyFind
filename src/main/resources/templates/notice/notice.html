@@ -217,10 +217,10 @@
 
 <script th:inline="javascript">
 
+    let accessToken = ""
+
     $(document).ready(function () {
         getAllNotice();
-
-
     })
 
     function getNoticeById(id) {
@@ -231,7 +231,6 @@
             $("#contents").val(result.contents);
             $("#title").val(result.title);
             $("#no").val(result.id);
-
         })
     }
 
@@ -239,9 +238,9 @@
         $.ajax({
             type: "GET",
             url: "/api/v1/notice/all",
-        }).done(function (result) {
+        }).done(function (result, status, xhr) {
+            accessToken = xhr.getResponseHeader("authorization")
             tableSetting(result)
-            console.log(result.headers)
         })
     }
 
