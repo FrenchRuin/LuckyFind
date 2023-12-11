@@ -20,3 +20,7 @@ data class TokenException(
     override val message: String,
 ) : ServerException(404, message)
 
+// Cookie 없을시 Exception
+data class CookieNotFoundException(
+    override val message: String,
+) : ServerException(404, message)

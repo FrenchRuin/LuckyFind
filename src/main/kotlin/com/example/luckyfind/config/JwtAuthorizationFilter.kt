@@ -1,17 +1,18 @@
 package com.example.luckyfind.config
 
 import com.example.luckyfind.domain.repository.UserRepository
+import com.example.luckyfind.exception.CookieNotFoundException
+import com.example.luckyfind.exception.TokenException
+import com.example.luckyfind.exception.UserNotFoundException
 import com.example.luckyfind.utils.CookieUtils
 import com.example.luckyfind.utils.JWTUtils
 import jakarta.servlet.FilterChain
-import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
-import java.util.Date
 
 class JwtAuthorizationFilter(
     private val userRepository: UserRepository,
@@ -27,7 +28,8 @@ class JwtAuthorizationFilter(
             "/templates",
             "/scripts",
             "/swagger-ui/",
-//            "/v3/api-docs"
+            "/index",
+//            "/notice"
         )
 
     override fun doFilterInternal(
@@ -41,7 +43,10 @@ class JwtAuthorizationFilter(
         println(request.servletPath) // request Path Print Test
 
         // RefreshToken in Cookie
-        val refreshToken = cookieUtils.getCookieValue(request.cookies, "refreshToken")
+        val refreshToken = cookieUtils.getCookieValue(request.cookies, "refreshToken") ?: throw CookieNotFoundException(
+            "쿠키가 존재하지 않습니다."
+        )
+
         if (jwtUtils.isExpired(refreshToken)) { // if refreshToken expired then
             response.sendRedirect("/logout") // logout
             val accessToken = request.getHeader("Authorization").split(" ")[1]
@@ -53,17 +58,24 @@ class JwtAuthorizationFilter(
             return
         }
 
+        // if refreshToken not expired then get userInfo in accessToken
+        var accessToken = request.getHeader("Authorization")
+        println(accessToken)
+        val claim = jwtUtils.parseClaims(accessToken) // parse Claims
+        // username == claim.subject
+        val user = userRepository.findByUsername("admin") ?: throw UserNotFoundException("유저가 존재하지 않습니다.")
 
-
-        val user = userRepository.findByUsername("admin")
+        // authentication
         val authentication: Authentication = UsernamePasswordAuthenticationToken(
-            user, user!!.password, user.authorities
+            user, user.password, user.authorities
         )
 
-        val token = jwtUtils.generateToken(authentication)
+//        if (jwtUtils.isExpired(accessToken)) { // if accessToken expired then
+//            accessToken = jwtUtils.generateAccessToken(claim)
+//        }
         SecurityContextHolder.getContext().authentication = authentication
-        response.addCookie(cookieUtils.createCookie("refreshToken", token.refreshToken)) // refreshToken put in Cookie
-        response.setHeader("Authorization", "Bearer ${token.accessToken}") // accessToken put in ResponseHeader
+        response.addCookie(cookieUtils.createCookie("refreshToken", refreshToken)) // refreshToken put in Cookie
+//        response.setHeader("Authorization", "Bearer $accessToken") // accessToken put in ResponseHeader
         filterChain.doFilter(request, response)
     }
 

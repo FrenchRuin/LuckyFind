@@ -8,14 +8,13 @@ class CookieUtils {
 
 
     // Get Cookie Value
-    fun getCookieValue(cookies: Array<Cookie>, name: String): String {
-        var cookie = ""
+    fun getCookieValue(cookies: Array<Cookie>, name: String): String? {
         for (c: Cookie in cookies) {
             if (c.name.equals(name)) {
-                cookie = c.value
+                return c.value
             }
         }
-        return cookie
+        return null
     }
 
     // create Cookie

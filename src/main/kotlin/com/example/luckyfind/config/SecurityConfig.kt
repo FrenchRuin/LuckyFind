@@ -75,6 +75,7 @@ class SecurityConfig(
                 authorize("/api/v1/**", permitAll)
                 authorize("/api/v1/user/signUp", permitAll)
                 authorize("/register", permitAll)
+                authorize("/index",permitAll)
                 authorize(anyRequest, authenticated)
             }
             sessionManagement {
@@ -86,19 +87,19 @@ class SecurityConfig(
             jwtAuthenticationFilter(),
             UsernamePasswordAuthenticationFilter::class.java
         )
-        http.addFilterBefore(
-            jwtAuthorizationFilter(),
-            UsernamePasswordAuthenticationFilter::class.java
-        )
+//        http.addFilterBefore(
+//            jwtAuthorizationFilter(),
+//            BasicAuthenticationFilter::class.java
+//        )
         // JWT token
         return http.build()!!
     }
-
+    @Bean
     fun authenticationManager(): AuthenticationManager =
         authenticationConfiguration.authenticationManager
-
+    @Bean
     fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
-        val jwtAuthenticationFilter = JwtAuthenticationFilter(jwtUtils)
+        val jwtAuthenticationFilter = JwtAuthenticationFilter(jwtUtils, userRepository)
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager())
         jwtAuthenticationFilter.setAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler)
         return jwtAuthenticationFilter
@@ -106,8 +107,9 @@ class SecurityConfig(
 
     // OncePerRequestFilter implements
     // refreshToken 검증 및 AccessToken 재발급
-    fun jwtAuthorizationFilter(): JwtAuthorizationFilter =
-        JwtAuthorizationFilter(userRepository, jwtUtils, cookieUtils)
+//    @Bean
+//    fun jwtAuthorizationFilter(): JwtAuthorizationFilter =
+//        JwtAuthorizationFilter(userRepository, jwtUtils, cookieUtils)
 
     // Password Encoder
     @Bean

@@ -2,7 +2,10 @@ package com.example.luckyfind.domain.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.util.stream.Collectors
 
 @Table(name = "users")
 @Entity
@@ -22,10 +25,7 @@ data class User(
     @Column
     val enabled: Boolean,
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
-    @JvmField
-    var authorities: MutableSet<UserAuthority>? = null,
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
@@ -44,17 +44,21 @@ data class User(
 
     ) : UserDetails {
 
-    override fun getAuthorities(): MutableSet<UserAuthority>? = authorities
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @JvmField
+    var authorities: MutableSet<UserAuthority> = mutableSetOf()
+
+    override fun getAuthorities(): MutableSet<UserAuthority> = authorities
 
     override fun getPassword(): String = password
 
     override fun getUsername(): String = username
 
-    override fun isAccountNonExpired(): Boolean = enabled
+    override fun isAccountNonExpired(): Boolean = true
 
-    override fun isAccountNonLocked(): Boolean = enabled
+    override fun isAccountNonLocked(): Boolean = true
 
-    override fun isCredentialsNonExpired(): Boolean = enabled
+    override fun isCredentialsNonExpired(): Boolean = true
 
-    override fun isEnabled(): Boolean = enabled
+    override fun isEnabled(): Boolean = true
 }

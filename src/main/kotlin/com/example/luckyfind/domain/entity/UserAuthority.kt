@@ -7,11 +7,11 @@ import org.springframework.security.core.GrantedAuthority
 
 @Entity
 //@IdClass(UserAuthority::class)
-class UserAuthority(
+data class UserAuthority(
     @Id
     val authorityId: Long,
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     val user : User,
