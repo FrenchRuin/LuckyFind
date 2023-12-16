@@ -30,18 +30,21 @@ data class User(
     @Enumerated(EnumType.STRING)
     val authority: AuthorityType,
 
+    @OneToOne(mappedBy = "user")
+    var token : Token? = null,
+
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JvmField
     var notices: List<Notice>? = null,
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JvmField
     var recruits: List<Recruit>? = null,
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JvmField
     var chats: List<Chat>? = null,
 

@@ -1,5 +1,10 @@
 package com.example.luckyfind.config
 
+import com.example.luckyfind.domain.entity.Token
+import com.example.luckyfind.domain.entity.User
+import com.example.luckyfind.domain.repository.TokenRepository
+import com.example.luckyfind.model.TokenRequest
+import com.example.luckyfind.service.TokenService
 import com.example.luckyfind.utils.CookieUtils
 import com.example.luckyfind.utils.JWTUtils
 import jakarta.servlet.FilterChain
@@ -12,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class JwtAuthenticationFilter(
     private val jwtUtils: JWTUtils,
     private val cookieUtils: CookieUtils,
+    private val tokenService: TokenService,
 ) : UsernamePasswordAuthenticationFilter() {
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
@@ -28,13 +34,14 @@ class JwtAuthenticationFilter(
         chain: FilterChain?,
         authResult: Authentication?
     ) {
-        authResult?.principal // 유저 정보
-        authResult?.authorities
-
         val token = jwtUtils.generateAccessToken(authResult!!)
         val cookie = cookieUtils.createCookie("refreshToken", token)
         response?.addCookie(cookie)
         response?.setHeader("Authorization", token)
+        tokenService.addToken(Token(
+            user = authResult.principal as User,
+            token = token,
+        ))
         chain?.doFilter(request, response)
     }
 }

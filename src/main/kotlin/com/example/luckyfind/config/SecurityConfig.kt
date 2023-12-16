@@ -1,5 +1,7 @@
 package com.example.luckyfind.config
 
+import com.example.luckyfind.domain.repository.TokenRepository
+import com.example.luckyfind.service.TokenService
 import com.example.luckyfind.utils.CookieUtils
 import com.example.luckyfind.utils.JWTUtils
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -25,6 +27,7 @@ class SecurityConfig(
     private val authenticationConfiguration: AuthenticationConfiguration,
     private val jwtUtils: JWTUtils,
     private val cookieUtils: CookieUtils,
+    private val tokenService: TokenService,
 ) {
     // Cors Filter Custom
     @Bean
@@ -98,7 +101,7 @@ class SecurityConfig(
 
     @Bean
     fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
-        val testFilter = JwtAuthenticationFilter(jwtUtils, cookieUtils)
+        val testFilter = JwtAuthenticationFilter(jwtUtils, cookieUtils, tokenService)
         testFilter.setAuthenticationManager(authenticationManager())
         return testFilter
     }

@@ -1,23 +1,15 @@
 package com.example.luckyfind.utils
 
-import com.example.luckyfind.domain.repository.UserRepository
-import com.example.luckyfind.model.TokenModel
-import com.example.luckyfind.service.UserService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
-import java.security.Principal
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
-import java.util.stream.Collectors
 import javax.crypto.spec.SecretKeySpec
 
 @Component

@@ -1,6 +1,7 @@
 package com.example.luckyfind.config
 
 import com.example.luckyfind.domain.repository.UserRepository
+import com.example.luckyfind.service.TokenService
 import com.example.luckyfind.service.UserService
 import com.example.luckyfind.utils.CookieUtils
 import com.example.luckyfind.utils.JWTUtils
@@ -17,6 +18,7 @@ class JwtAuthorizationFilter(
     private val jwtUtils: JWTUtils,
     private val cookieUtils: CookieUtils,
     private val userService: UserService,
+    private val tokenService: TokenService,
 ) : OncePerRequestFilter() {
 
     // 요청 제외 url
@@ -38,30 +40,31 @@ class JwtAuthorizationFilter(
     ) {
         // TODO
         // OncePerRequestFilter 두번 호출됨 수정 필요 2023.12.09
-        // 처음에 로그인 수행시, RefreshToken 으로 파악을하자.
-        //
-        println("OncePerRequestFilter")
 
-//        println(request.servletPath) // request Path Print Test
+        println(request.servletPath) // request Path Print Test
         val refreshToken = cookieUtils.getRefreshTokenInCookie(request.cookies) // RefreshToken in Cookie
         val accessToken: String? = request.getHeader("Authorization") // AccessToken in RequestHeader
-        println(refreshToken)
-        println(accessToken)
+        val claims = jwtUtils.parseClaims(refreshToken)
+        val user = userService.loadUserByUsername(claims.subject) // user정보
+
+        // case 0 : 토큰과 일치한지 체크
+        val refreshTokenInDb = tokenService.getToken(user.username)
+        println(refreshTokenInDb)
+        if (!refreshToken.equals(refreshTokenInDb.token)) {
+            tokenService.deleteToken(user.username)
+            filterChain.doFilter(request, response)
+            return
+        }
 
         // case 1 : AccessToken & RefreshToken is Expired
-        println("CASE 1")
         if ((jwtUtils.isExpired(refreshToken))) {
+            tokenService.deleteToken(user.username)
             filterChain.doFilter(request, response)
             return
         }
 
         // case 2 : AccessToken is Expired & RefreshToken is Valid
-        println("CASE 2")
         if (jwtUtils.isExpired(accessToken?.split(" ")?.get(1))) {
-            println("ACCESSTOKEN EXPIRED")
-            val claims = jwtUtils.parseClaims(refreshToken)
-            println(claims)
-            val user = userService.loadUserByUsername(claims.subject)
             val newAccessToken = jwtUtils.generateAccessToken(claims)
             response.setHeader("Authorization", "Bearer $newAccessToken") // accessToken put in ResponseHeader
             SecurityContextHolder.getContext().authentication =
@@ -71,8 +74,6 @@ class JwtAuthorizationFilter(
         }
 
         // case 3. RefreshToken is Valid & AccessToken is Valid
-        val claims = jwtUtils.parseClaims(refreshToken)
-        val user = userService.loadUserByUsername(claims.subject)
         response.setHeader("Authorization", "Bearer $accessToken") // accessToken put in ResponseHeader
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(user, "", user.authorities)
