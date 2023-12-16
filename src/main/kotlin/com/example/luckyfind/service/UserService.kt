@@ -2,15 +2,12 @@ package com.example.luckyfind.service
 
 import com.example.luckyfind.config.TokenProvider
 import com.example.luckyfind.domain.entity.User
-import com.example.luckyfind.domain.entity.UserAuthority
 import com.example.luckyfind.domain.enum.AuthorityType
 import com.example.luckyfind.domain.repository.UserRepository
 import com.example.luckyfind.exception.UserNotFoundException
 import com.example.luckyfind.model.LogInResponse
-import com.example.luckyfind.model.TokenModel
 import com.example.luckyfind.model.UserRequest
 import com.example.luckyfind.model.UserResponse
-import mu.KotlinLogging
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -32,7 +29,6 @@ class UserService(
     fun findUser(username: String): UserResponse =
         UserResponse(userRepository.findByUsername(username) ?: throw UserNotFoundException("유저가 존재하지 않습니다."))
 
-
     // 회원가입
     @Transactional
     fun signUp(request: UserRequest): UserResponse {
@@ -41,24 +37,10 @@ class UserService(
                 username = request.username,
                 password = passwordEncoder.encode(request.password),
                 enabled = true,
+                authority = AuthorityType.ROLE_USER
             )
-        ).also {
-            //권한 부여
-            addAuthority(it.userId!!, request.authority)
-        }
-
+        )
         return UserResponse(user)
-    }
-
-    // 권한 부여
-    fun addAuthority(userId: Long, authority: String) {
-        userRepository.findById(userId).ifPresent {
-            val newAuthority = UserAuthority(userId, it, AuthorityType(authority))
-            if (it.authorities == null) {
-                it.authorities = mutableSetOf(newAuthority)
-                userRepository.save(it)
-            }
-        }
     }
 
     @Transactional

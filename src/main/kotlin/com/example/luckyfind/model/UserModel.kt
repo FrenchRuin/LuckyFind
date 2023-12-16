@@ -1,7 +1,6 @@
 package com.example.luckyfind.model
 
 import com.example.luckyfind.domain.entity.User
-import com.example.luckyfind.domain.entity.UserAuthority
 
 // 로그인응답 response
 data class LogInResponse(
@@ -20,7 +19,7 @@ data class UserResponse(
     val username: String,
     val password: String,
     val enabled: Boolean,
-    val authorities: Set<UserAuthority>,
+    val authority: String,
 ) {
     companion object {
         operator fun invoke(user: User) =
@@ -30,7 +29,7 @@ data class UserResponse(
                     username = username,
                     password = password,
                     enabled = enabled,
-                    authorities = authorities!!,
+                    authority = authority.toString(),
                 )
             }
     }

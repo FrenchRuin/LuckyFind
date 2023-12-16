@@ -1,7 +1,6 @@
 package com.example.luckyfind.config
 
 import com.example.luckyfind.domain.entity.User
-import com.example.luckyfind.domain.entity.UserAuthority
 import com.example.luckyfind.domain.enum.AuthorityType
 import com.example.luckyfind.domain.repository.UserRepository
 import org.springframework.boot.ApplicationArguments
@@ -19,16 +18,8 @@ class AdminInitializer(
             username = "admin",
             password = passwordEncoder.encode("1234"),
             enabled = true,
+            authority = AuthorityType.ROLE_ADMIN
         )
-        val authorities = mutableSetOf(
-            UserAuthority(
-                authority = AuthorityType.ROLE_ADMIN,
-                user = user,
-                authorityId = 1L
-            )
-        )
-        user.authorities = authorities
-
         userRepository.save(user)
     }
 }

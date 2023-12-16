@@ -1,5 +1,6 @@
 package com.example.luckyfind.domain.entity
 
+import com.example.luckyfind.domain.enum.AuthorityType
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
@@ -25,30 +26,29 @@ data class User(
     @Column
     val enabled: Boolean,
 
-
+    @Column
+    @Enumerated(EnumType.STRING)
+    val authority: AuthorityType,
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JvmField
     var notices: List<Notice>? = null,
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JvmField
     var recruits: List<Recruit>? = null,
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JvmField
     var chats: List<Chat>? = null,
 
     ) : UserDetails {
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    @JvmField
-    var authorities: MutableSet<UserAuthority> = mutableSetOf()
-
-    override fun getAuthorities(): MutableSet<UserAuthority> = authorities
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
+        return mutableListOf(SimpleGrantedAuthority(authority.toString()))
+    }
 
     override fun getPassword(): String = password
 

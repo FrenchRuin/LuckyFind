@@ -63,6 +63,7 @@
                   </div>
 
                   <form class="row g-3 needs-validation" method="post" th:action="@{/login}" novalidate>
+                    <input type="hidden" name="${_csrf.}">
 
                     <div class="col-12">
                       <label for="username" class="form-label">Username</label>

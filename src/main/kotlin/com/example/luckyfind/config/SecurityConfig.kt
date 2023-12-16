@@ -25,7 +25,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableWebSecurity
 class SecurityConfig(
     private val authenticationConfiguration: AuthenticationConfiguration,
-    private val jwtAuthenticationSuccessHandler: JwtAuthenticationSuccessHandler,
     private val jwtUtils: JWTUtils,
     private val cookieUtils: CookieUtils,
     private val userRepository: UserRepository,
@@ -61,7 +60,8 @@ class SecurityConfig(
                 }
             }
             formLogin {
-                disable()
+                loginPage = "/login"
+                defaultSuccessUrl("/index", false)
             }
             logout {
                 logoutSuccessUrl = "/login"
@@ -75,7 +75,7 @@ class SecurityConfig(
                 authorize("/api/v1/**", permitAll)
                 authorize("/api/v1/user/signUp", permitAll)
                 authorize("/register", permitAll)
-                authorize("/index",permitAll)
+                authorize("/index", permitAll)
                 authorize(anyRequest, authenticated)
             }
             sessionManagement {
@@ -84,32 +84,22 @@ class SecurityConfig(
             }
         }
         http.addFilterBefore(
-            jwtAuthenticationFilter(),
+            jwtAuthorizationFilter(),
             UsernamePasswordAuthenticationFilter::class.java
         )
-//        http.addFilterBefore(
-//            jwtAuthorizationFilter(),
-//            BasicAuthenticationFilter::class.java
-//        )
         // JWT token
         return http.build()!!
     }
+
     @Bean
     fun authenticationManager(): AuthenticationManager =
         authenticationConfiguration.authenticationManager
-    @Bean
-    fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
-        val jwtAuthenticationFilter = JwtAuthenticationFilter(jwtUtils, userRepository)
-        jwtAuthenticationFilter.setAuthenticationManager(authenticationManager())
-        jwtAuthenticationFilter.setAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler)
-        return jwtAuthenticationFilter
-    }
 
     // OncePerRequestFilter implements
     // refreshToken 검증 및 AccessToken 재발급
-//    @Bean
-//    fun jwtAuthorizationFilter(): JwtAuthorizationFilter =
-//        JwtAuthorizationFilter(userRepository, jwtUtils, cookieUtils)
+    @Bean
+    fun jwtAuthorizationFilter(): JwtAuthorizationFilter =
+        JwtAuthorizationFilter(userRepository, jwtUtils, cookieUtils)
 
     // Password Encoder
     @Bean
