@@ -5,7 +5,14 @@ import com.example.luckyfind.domain.entity.User
 // 로그인응답 response
 data class LogInResponse(
     val username: String,
-    val token: String,
+    val refreshToken: String,
+    val accessToken: String,
+    )
+
+
+data class LogInRequest(
+    val username: String,
+    val password: String,
 )
 
 data class UserRequest(

@@ -1,23 +1,22 @@
 package com.example.luckyfind.config
 
 import com.example.luckyfind.domain.repository.UserRepository
-import com.example.luckyfind.exception.CookieNotFoundException
-import com.example.luckyfind.exception.TokenException
-import com.example.luckyfind.exception.UserNotFoundException
+import com.example.luckyfind.service.UserService
 import com.example.luckyfind.utils.CookieUtils
 import com.example.luckyfind.utils.JWTUtils
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
+@Component
 class JwtAuthorizationFilter(
-    private val userRepository: UserRepository,
     private val jwtUtils: JWTUtils,
     private val cookieUtils: CookieUtils,
+    private val userService: UserService,
 ) : OncePerRequestFilter() {
 
     // 요청 제외 url
@@ -28,7 +27,7 @@ class JwtAuthorizationFilter(
             "/templates",
             "/scripts",
             "/swagger-ui/",
-            "/index",
+//            "/index",
 //            "/notice"
         )
 
@@ -37,51 +36,46 @@ class JwtAuthorizationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-
         // TODO
         // OncePerRequestFilter 두번 호출됨 수정 필요 2023.12.09
-        println(request.servletPath) // request Path Print Test
+        // 처음에 로그인 수행시, RefreshToken 으로 파악을하자.
+        //
+        println("OncePerRequestFilter")
 
-        val header: String? = request.getHeader("Authorization")
+//        println(request.servletPath) // request Path Print Test
+        val refreshToken = cookieUtils.getRefreshTokenInCookie(request.cookies) // RefreshToken in Cookie
+        val accessToken: String? = request.getHeader("Authorization") // AccessToken in RequestHeader
+        println(refreshToken)
+        println(accessToken)
 
-//        if (header == null) {
-//            filterChain.doFilter(request, response)
-//        }
-//        // RefreshToken in Cookie
-//        val refreshToken = cookieUtils.getCookieValue(request.cookies, "refreshToken") ?: throw CookieNotFoundException(
-//            "쿠키가 존재하지 않습니다."
-//        )
-//
-//        if (jwtUtils.isExpired(refreshToken)) { // if refreshToken expired then
-//            response.sendRedirect("/logout") // logout
-//            val accessToken = request.getHeader("Authorization").split(" ")[1]
-//            println(accessToken)
-//            val authentication = jwtUtils.getAuthentication(accessToken) // UsernamePasswordAuthenticationToken return
-//            println(authentication)
-//            SecurityContextHolder.getContext().authentication = authentication
-//            filterChain.doFilter(request, response)
-//            return
-//        }
-//
-//        // if refreshToken not expired then get userInfo in accessToken
-//        var accessToken = request.getHeader("Authorization")
-//        println(accessToken)
-//        val claim = jwtUtils.parseClaims(accessToken) // parse Claims
-        // username == claim.subject
-        val user = userRepository.findByUsername("admin") ?: throw UserNotFoundException("유저가 존재하지 않습니다.")
-        // authentication
-        val authentication: Authentication = UsernamePasswordAuthenticationToken(
-            user, user.password, user.authorities
-        )
+        // case 1 : AccessToken & RefreshToken is Expired
+        println("CASE 1")
+        if ((jwtUtils.isExpired(refreshToken))) {
+            filterChain.doFilter(request, response)
+            return
+        }
 
-        println(authentication.authorities)
+        // case 2 : AccessToken is Expired & RefreshToken is Valid
+        println("CASE 2")
+        if (jwtUtils.isExpired(accessToken?.split(" ")?.get(1))) {
+            println("ACCESSTOKEN EXPIRED")
+            val claims = jwtUtils.parseClaims(refreshToken)
+            println(claims)
+            val user = userService.loadUserByUsername(claims.subject)
+            val newAccessToken = jwtUtils.generateAccessToken(claims)
+            response.setHeader("Authorization", "Bearer $newAccessToken") // accessToken put in ResponseHeader
+            SecurityContextHolder.getContext().authentication =
+                UsernamePasswordAuthenticationToken(user, "", user.authorities)
+            filterChain.doFilter(request, response)
+            return
+        }
 
-//        if (jwtUtils.isExpired(accessToken)) { // if accessToken expired then
-//            accessToken = jwtUtils.generateAccessToken(claim)
-//        }
-        SecurityContextHolder.getContext().authentication = authentication
-//        response.addCookie(cookieUtils.createCookie("refreshToken", refreshToken)) // refreshToken put in Cookie
-//        response.setHeader("Authorization", "Bearer $accessToken") // accessToken put in ResponseHeader
+        // case 3. RefreshToken is Valid & AccessToken is Valid
+        val claims = jwtUtils.parseClaims(refreshToken)
+        val user = userService.loadUserByUsername(claims.subject)
+        response.setHeader("Authorization", "Bearer $accessToken") // accessToken put in ResponseHeader
+        SecurityContextHolder.getContext().authentication =
+            UsernamePasswordAuthenticationToken(user, "", user.authorities)
         filterChain.doFilter(request, response)
     }
 

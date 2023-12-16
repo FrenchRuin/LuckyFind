@@ -189,14 +189,12 @@
 </body>
 
 <script th:inline="javascript">
-
-
    $(function(){
        let req = new XMLHttpRequest();
        req.open('GET', document.location, false);
        req.send(null);
-       let token = req.getResponseHeader("authorization")
-       localStorage.setItem("token", token) // localStorage에 저장
+       let token = req.getResponseHeader("Authorization")
+       localStorage.setItem("token", "ASDFSADF") // localStorage에 저장
    })
 </script>
 

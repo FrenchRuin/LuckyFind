@@ -218,11 +218,15 @@
 <script th:inline="javascript">
 
     let accessToken = ""
-
-    $(document).ready(function () {
+    $(function(){
+        let req = new XMLHttpRequest();
+        req.open('GET', document.location, false);
+        req.send(null);
+        accessToken = req.getResponseHeader("Authorization")
+        localStorage.setItem("token", accessToken) // localStorage에 저장
+        console.log(accessToken)
         getAllNotice();
     })
-
     function getNoticeById(id) {
         $.ajax({
             type: "GET",
@@ -238,6 +242,9 @@
         $.ajax({
             type: "GET",
             url: "/api/v1/notice/all",
+            beforeSend : function(xhr){
+                xhr.setRequestHeader("Authorization", accessToken)
+            }
         }).done(function (result, status, xhr) {
             accessToken = xhr.getResponseHeader("authorization")
             tableSetting(result)

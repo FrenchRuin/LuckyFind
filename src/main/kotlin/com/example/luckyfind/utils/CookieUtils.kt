@@ -8,17 +8,18 @@ class CookieUtils {
 
 
     // Get Cookie Value
-    fun getCookieValue(cookies: Array<Cookie>, name: String): String? {
+    fun getRefreshTokenInCookie(cookies: Array<Cookie>): String {
+        var value = ""
         for (c: Cookie in cookies) {
-            if (c.name.equals(name)) {
-                return c.value
+            if (c.name.equals("refreshToken")) {
+                value = c.value
             }
         }
-        return null
+        return value
     }
 
     // create Cookie
-    fun createCookie(name : String, value : String) : Cookie{
+    fun createCookie(name: String, value: String): Cookie {
         val cookie = Cookie(name, value)
         cookie.secure = true
         cookie.isHttpOnly = true
